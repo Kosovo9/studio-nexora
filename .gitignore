@@ -49,3 +49,6 @@ prisma/migrations/
 # Uploads
 /public/uploads/
 /tmp/
+*.backup*.json
+vercel.backup-*.json
+.vercel/output
