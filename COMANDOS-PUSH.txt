@@ -1,0 +1,31 @@
+# 🚀 COMANDOS PARA SUBIR A GITHUB
+# Copia y pega estos comandos uno por uno en tu terminal
+
+# ============================================
+# PASO 1: Navegar al proyecto
+# ============================================
+cd C:\studio-nexora
+
+# ============================================
+# PASO 2: Conectar con tu repositorio de GitHub
+# ============================================
+gcd C:\studio-nexora=s 
+
+# ============================================
+# PASO 3: Hacer push a GitHub
+# ============================================
+git push -u origin main
+
+# ============================================
+# ¡LISTO! Tu proyecto estará en GitHub
+# ============================================
+
+# Si te pide credenciales:
+# - Username: Kosovo9
+# - Password: Usa tu Personal Access Token (no tu contraseña)
+
+# Para crear un Personal Access Token:
+# 1. Ve a: https://github.com/settings/tokens
+# 2. Click en "Generate new token (classic)"
+# 3. Marca el scope "repo"
+# 4. Copia el token y úsalo como contraseña

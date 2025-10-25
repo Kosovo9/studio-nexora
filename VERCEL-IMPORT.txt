@@ -1,0 +1,51 @@
+# 🚀 IMPORTAR STUDIO NEXORA A VERCEL
+
+## ✅ MÉTODO 1: USAR URL DIRECTA (Más Fácil)
+
+### Paso 1: Copiar esta URL
+https://github.com/Kosovo9/StudioNexora
+
+### Paso 2: En Vercel
+1. Pega la URL en el campo "Enter a Git repository URL to deploy..."
+2. Click en "Continue"
+3. Click en "Deploy"
+
+¡Listo!
+
+---
+
+## ✅ MÉTODO 2: BUSCAR EN LA LISTA
+
+### Si no aparece en la lista:
+1. Click en el dropdown "Kosovo9" (arriba a la izquierda)
+2. Busca "StudioNexora" en el buscador
+3. Si no aparece, usa el Método 1 (URL directa)
+
+---
+
+## ✅ MÉTODO 3: AUTORIZAR VERCEL EN GITHUB
+
+Si ninguno funciona:
+
+1. Ve a: https://github.com/settings/installations
+2. Busca "Vercel"
+3. Click en "Configure"
+4. En "Repository access":
+   - Selecciona "All repositories"
+   - O selecciona "Only select repositories" y agrega "StudioNexora"
+5. Click en "Save"
+6. Vuelve a Vercel y refresca la página
+
+---
+
+## 🎯 SOLUCIÓN RÁPIDA (Copia y Pega):
+
+En el campo donde dice "Enter a Git repository URL to deploy...", pega:
+
+https://github.com/Kosovo9/StudioNexora
+
+Luego click en "Continue"
+
+---
+
+¡Eso es todo! En 2-3 minutos tendrás tu link público.
