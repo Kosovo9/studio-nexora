@@ -419,3 +419,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 Made with ❤️ by Studio Nexora Team
 
 **100x Optimized** | **Production Ready** | **Enterprise Grade**
+#   s t u d i o - n e x o r a  
+ 
