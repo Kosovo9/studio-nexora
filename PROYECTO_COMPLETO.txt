@@ -1,0 +1,792 @@
+PROYECTO STUDIO NEXORA - CONTENIDO COMPLETO
+===========================================
+
+ESTRUCTURA DE DIRECTORIOS:
+==========================
+
+[.]
+(directorio raíz)
+
+[.env.example]
+```
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/nexora"
+
+# NextAuth.js
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-here"
+
+# OAuth Providers
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+# Replicate API
+REPLICATE_API_TOKEN="your-replicate-token"
+
+# Stripe
+STRIPE_PUBLISHABLE_KEY="pk_test_..."
+STRIPE_SECRET_KEY="sk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+
+# Cloudflare Turnstile
+NEXT_PUBLIC_TURNSTILE_SITE_KEY="your-turnstile-site-key"
+TURNSTILE_SECRET_KEY="your-turnstile-secret"
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL="your-supabase-url"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key"
+SUPABASE_SERVICE_ROLE_KEY="your-supabase-service-role-key"
+
+# Redis (for queue)
+REDIS_URL="redis://localhost:6379"
+
+# File Upload
+MAX_FILE_SIZE=10485760
+ALLOWED_FILE_TYPES="image/jpeg,image/png,image/webp"
+```
+
+[.env.local.example]
+```
+# Copia este archivo a .env.local y completa con tus valores reales
+
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/nexora"
+
+# NextAuth.js
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="tu-secreto-super-seguro-aqui"
+
+# OAuth Providers
+GOOGLE_CLIENT_ID="tu-google-client-id"
+GOOGLE_CLIENT_SECRET="tu-google-client-secret"
+
+# Replicate API
+REPLICATE_API_TOKEN="tu-replicate-token"
+
+# Stripe
+STRIPE_PUBLISHABLE_KEY="pk_test_..."
+STRIPE_SECRET_KEY="sk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+
+# Cloudflare Turnstile
+NEXT_PUBLIC_TURNSTILE_SITE_KEY="tu-turnstile-site-key"
+TURNSTILE_SECRET_KEY="tu-turnstile-secret"
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL="tu-supabase-url"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="tu-supabase-anon-key"
+SUPABASE_SERVICE_ROLE_KEY="tu-supabase-service-role-key"
+
+# Redis (for queue)
+REDIS_URL="redis://localhost:6379"
+```
+
+[.eslintrc.json]
+```
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}
+```
+
+[.github]
+(directorio)
+
+[.github/copilot-instructions.md]
+```
+# GitHub Copilot Instructions for Studio Nexora
+
+## Project Context
+Studio Nexora is a modern AI-powered image processing platform built with Next.js 14, TypeScript, and Tailwind CSS.
+
+## Code Style Guidelines
+- Use TypeScript for all new files
+- Follow React functional components with hooks
+- Use Tailwind CSS for styling
+- Implement proper error handling
+- Add JSDoc comments for complex functions
+- Use meaningful variable and function names
+
+## Architecture Patterns
+- Server Components by default, Client Components when needed
+- Custom hooks for reusable logic
+- Zustand for state management
+- Prisma for database operations
+- NextAuth.js for authentication
+
+## Security Considerations
+- Validate all user inputs
+- Sanitize file uploads
+- Use environment variables for secrets
+- Implement rate limiting
+- Add CSRF protection
+
+## Performance Optimization
+- Use Next.js Image component
+- Implement lazy loading
+- Optimize bundle size
+- Use React.memo for expensive components
+- Implement proper caching strategies
+```
+
+[.github/workflows]
+(directorio)
+
+[.github/workflows/ci.yml]
+```
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm run install:ci
+    
+    - name: Run verification
+      run: npm run verify
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Run tests
+      run: npm test
+      
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: verify
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm run install:ci
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Run Lighthouse CI
+      run: npx lhci autorun
+```
+
+[.gitignore]
+```
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env*.local
+.env
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+public
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# Temporary folders
+tmp/
+temp/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local Netlify folder
+.netlify
+
+# Prisma
+prisma/migrations/
+```
+
+[.lighthouserc.js]
+```
+module.exports = {
+  ci: {
+    collect: {
+      url: ['http://localhost:3000'],
+      startServerCommand: 'npm run build && npm start',
+      startServerReadyPattern: 'ready on',
+      startServerReadyTimeout: 30000,
+    },
+    assert: {
+      assertions: {
+        'categories:performance': ['warn', { minScore: 0.8 }],
+        'categories:accessibility': ['error', { minScore: 0.9 }],
+        'categories:best-practices': ['warn', { minScore: 0.8 }],
+        'categories:seo': ['warn', { minScore: 0.8 }],
+      },
+    },
+    upload: {
+      target: 'temporary-public-storage',
+    },
+  },
+};
+```
+
+[.npmrc]
+```
+engine-strict=true
+save-exact=true
+```
+
+[.nvmrc]
+```
+18.17.0
+```
+
+[.prettierrc]
+```
+{
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false
+}
+```
+
+[.trae]
+(directorio)
+
+[.trae/rules]
+(directorio)
+
+[.trae/rules/project_rules.md]
+```
+# Project Rules — NEXORA
+
+## Meta
+- Repo: studio-nexora
+- Owner PR por defecto: @Neil
+- Gestor: pnpm>yarn>npm. Node LTS>=18 (definir en `.nvmrc`).
+- Stack: Next.js 14 + TypeScript + Tailwind CSS.
+
+## Gobernanza Git
+- Ramas: auto/<slug>, fix/*, feat/*, chore/*.
+- Commits: convencionales.
+- PR obligatorio si >50 líneas o >5 archivos.
+- CI: `.github/workflows/ci.yml` debe correr `verify` y `build`.
+
+## Scripts estándar (si falta, crearlos)
+- `install:ci`: auto-install por lockfile.
+- `verify`: install:ci + lint + typecheck (NO-OP si no hay config).
+- `predeploy`: `vercel build` (o build framework).
+- `deploy`: `vercel deploy --prod --yes`
+- `deploy:preview`: `vercel deploy --yes`
+- `export`: `next build && next export -o out` (si SSG)
+- `deploy:cf`: wrangler pages deploy (usa CF_PAGES_PROJECT/BRANCH)
+
+## Despliegue
+### Vercel
+- Org/Team: <VERCEL_ORG_ID>
+- Project: <VERCEL_PROJECT_ID|slug>
+- Pasos: `vercel pull --yes --environment=production --token $env:VERCEL_TOKEN` → `vercel build` → `vercel deploy --prod --yes`
+- Respetar `vercel.json` si existe.
+
+### Cloudflare
+- Pages (SSG): CF_PAGES_PROJECT=<nombre>, CF_PAGES_BRANCH=production.
+- Workers (SSR/Edge): si hay `wrangler.toml`, usar `wrangler deploy`.
+- No tocar DNS; solo sugerir registros.
+
+## Integraciones & Variables
+- Definir en host/CI (no en código).
+- Requeridas (según use-case):  
+  - GitHub: `GITHUB_PERSONAL_ACCESS_TOKEN` o `GH_TOKEN`  
+  - Vercel: `VERCEL_TOKEN`,`VERCEL_ORG_ID`,`VERCEL_PROJECT_ID`  
+  - Cloudflare: `CLOUDFLARE_API_TOKEN`,`CLOUDFLARE_ACCOUNT_ID`,`CF_PAGES_PROJECT`,`CF_PAGES_BRANCH`  
+  - Supabase/Stripe/PayPal/etc.: nombres exactos en `.env.template` con placeholders
+- Prohibido imprimir valores.
+
+## Monorepo
+- Si existe `pnpm-workspace.yaml` o `turbo.json`:
+  - Ejecutar `turbo run verify --parallel` y `turbo run build --parallel`.
+  - PR debe listar apps afectadas y resultados por app.
+
+## Calidad
+- Lint/Typecheck deben pasar (`npm run verify`).
+- Tests de humo mínimos:
+  - Web: render por página/comp crítico.
+  - API: 200/JSON.
+- Assets pesados: lazy-load; fallback en móviles/low GPU.
+
+## Aceptación
+- ✅ `verify` y `predeploy` OK local.
+- ✅ PR abierto con checklist/logs.
+- ✅ Deploy preview/prod funcionando (URL).
+- ✅ README actualizado + `.env.template` completo.
+- ✅ Sin secretos en commits/logs.
+```
+
+[COMANDOS-PUSH.txt]
+```
+# Comandos para hacer push del proyecto
+
+git add .
+git commit -m "feat: initial project setup"
+git push origin main
+
+# Para crear una nueva rama
+git checkout -b feature/nueva-funcionalidad
+git add .
+git commit -m "feat: nueva funcionalidad"
+git push origin feature/nueva-funcionalidad
+```
+
+[CONTRIBUTING.md]
+```
+# Contributing to Studio Nexora
+
+## Getting Started
+
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/your-username/studio-nexora.git`
+3. Install dependencies: `npm install`
+4. Copy environment variables: `cp .env.example .env.local`
+5. Start development server: `npm run dev`
+
+## Development Guidelines
+
+### Code Style
+- Use TypeScript for all new files
+- Follow ESLint and Prettier configurations
+- Write meaningful commit messages (Conventional Commits)
+- Add tests for new features
+
+### Pull Request Process
+1. Create a feature branch from `main`
+2. Make your changes
+3. Run tests: `npm test`
+4. Run linting: `npm run lint`
+5. Submit a pull request
+
+### Commit Message Format
+```
+type(scope): description
+
+[optional body]
+
+[optional footer]
+```
+
+Types: feat, fix, docs, style, refactor, test, chore
+
+## Testing
+- Write unit tests for utilities and hooks
+- Add integration tests for API endpoints
+- Include E2E tests for critical user flows
+
+## Documentation
+- Update README.md for new features
+- Add JSDoc comments for complex functions
+- Update API documentation
+```
+
+[DEPLOY-VERCEL.md]
+```
+# Deployment Guide - Vercel
+
+## Prerequisites
+- Vercel account
+- GitHub repository connected
+- Environment variables configured
+
+## Environment Variables
+Set these in Vercel dashboard:
+
+### Required
+- `DATABASE_URL`
+- `NEXTAUTH_SECRET`
+- `NEXTAUTH_URL`
+- `REPLICATE_API_TOKEN`
+- `STRIPE_SECRET_KEY`
+- `STRIPE_PUBLISHABLE_KEY`
+
+### Optional
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
+
+## Deployment Steps
+
+1. **Connect Repository**
+   ```bash
+   vercel --prod
+   ```
+
+2. **Configure Build Settings**
+   - Build Command: `npm run build`
+   - Output Directory: `.next`
+   - Install Command: `npm install`
+
+3. **Set Environment Variables**
+   ```bash
+   vercel env add DATABASE_URL
+   vercel env add NEXTAUTH_SECRET
+   # ... add all required variables
+   ```
+
+4. **Deploy**
+   ```bash
+   vercel deploy --prod
+   ```
+
+## Custom Domain
+1. Add domain in Vercel dashboard
+2. Configure DNS records
+3. Enable SSL certificate
+
+## Monitoring
+- Check deployment logs in Vercel dashboard
+- Monitor performance with Vercel Analytics
+- Set up error tracking
+```
+
+[DEPLOYMENT.md]
+```
+# Deployment Guide
+
+## Supported Platforms
+
+### Vercel (Recommended)
+- Automatic deployments from Git
+- Edge functions support
+- Built-in analytics
+- Custom domains
+
+### Cloudflare Pages
+- Fast global CDN
+- Workers integration
+- Free tier available
+
+### Docker
+- Containerized deployment
+- Kubernetes support
+- Self-hosted option
+
+## Environment Setup
+
+### Production Environment Variables
+```bash
+# Database
+DATABASE_URL="postgresql://..."
+
+# Authentication
+NEXTAUTH_URL="https://your-domain.com"
+NEXTAUTH_SECRET="your-production-secret"
+
+# API Keys
+REPLICATE_API_TOKEN="your-token"
+STRIPE_SECRET_KEY="sk_live_..."
+
+# Security
+TURNSTILE_SECRET_KEY="your-secret"
+```
+
+### Build Configuration
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm ci"
+}
+```
+
+## Deployment Checklist
+
+- [ ] Environment variables configured
+- [ ] Database migrations applied
+- [ ] SSL certificate enabled
+- [ ] Custom domain configured
+- [ ] Analytics setup
+- [ ] Error monitoring enabled
+- [ ] Performance monitoring active
+- [ ] Backup strategy implemented
+
+## Rollback Strategy
+1. Keep previous deployment available
+2. Database migration rollback plan
+3. Feature flags for quick disabling
+4. Monitoring alerts configured
+```
+
+[Dockerfile]
+```
+FROM node:18-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Install dependencies based on the preferred package manager
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Build the application
+RUN npm run build
+
+# Production image, copy all the files and run next
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["node", "server.js"]
+```
+
+[package.json]
+```
+{
+    "name": "studio-nexora",
+    "version": "2.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "type-check": "tsc --noEmit",
+        "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+        "db:push": "prisma db push",
+        "db:studio": "prisma studio",
+        "db:generate": "prisma generate",
+        "db:migrate": "prisma migrate dev",
+        "db:reset": "prisma migrate reset",
+        "postinstall": "prisma generate",
+        "install:ci": "pnpm install --frozen-lockfile",
+        "verify": "pnpm run install:ci && pnpm run lint && pnpm run type-check",
+        "predeploy": "pnpm run build",
+        "deploy": "vercel deploy --prod --yes",
+        "deploy:preview": "vercel deploy --yes",
+        "deploy:cf": "wrangler pages deploy",
+        "test": "playwright test",
+        "test:ui": "playwright test --ui",
+        "test:e2e": "playwright test --config=playwright.config.ts",
+        "lighthouse": "lhci autorun",
+        "lighthouse:ci": "lhci autorun --config=.lighthouserc.js",
+        "seed": "tsx scripts/seed-test-data.ts",
+        "setup": "node scripts/setup.js",
+        "setup:stripe": "tsx scripts/setup-stripe-products.ts",
+        "setup:safe-ship": "bash scripts/setup-safe-ship.sh",
+        "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+        "worker:start": "tsx src/workers/imageProcessor.ts",
+        "queue:clean": "tsx scripts/clean-queue.ts",
+        "qa:full": "pnpm run verify && pnpm run test:e2e && pnpm run lighthouse:ci",
+        "export": "next build && next export -o out"
+    },
+    "dependencies": {
+        "@aws-sdk/client-s3": "^3.478.0",
+        "@aws-sdk/s3-request-presigner": "^3.478.0",
+        "@clerk/nextjs": "4.31.8",
+        "@prisma/client": "^5.8.0",
+        "@radix-ui/react-checkbox": "^1.0.4",
+        "@radix-ui/react-dialog": "^1.0.5",
+        "@radix-ui/react-dropdown-menu": "^2.0.6",
+        "@radix-ui/react-progress": "^1.0.3",
+        "@radix-ui/react-select": "^2.0.0",
+        "@radix-ui/react-slot": "^1.2.3",
+        "@radix-ui/react-tabs": "^1.0.4",
+        "@radix-ui/react-toast": "^1.1.5",
+        "@stripe/stripe-js": "^2.4.0",
+        "@supabase/supabase-js": "^2.39.3",
+        "@types/three": "^0.180.0",
+        "@vercel/analytics": "^1.1.1",
+        "@vercel/speed-insights": "^1.0.2",
+        "axios": "^1.6.5",
+        "bull": "^4.12.2",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "framer-motion": "^10.18.0",
+        "js-cookie": "^3.0.5",
+        "lucide-react": "^0.303.0",
+        "next": "14.2.25",
+        "next-auth": "^4.24.5",
+        "next-intl": "^3.26.5",
+        "react": "18.3.1",
+        "react-dom": "18.3.1",
+        "react-dropzone": "^14.2.3",
+        "react-hot-toast": "^2.4.1",
+        "redis": "^4.6.12",
+        "replicate": "^0.25.2",
+        "sharp": "^0.33.1",
+        "stripe": "^14.12.0",
+        "tailwind-merge": "^2.6.0",
+        "tailwindcss-animate": "^1.0.7",
+        "three": "^0.180.0",
+        "zod": "^3.22.4",
+        "zustand": "^4.4.7"
+    },
+    "devDependencies": {
+        "@lhci/cli": "^0.12.0",
+        "@playwright/test": "^1.40.1",
+        "@types/bull": "^4.10.0",
+        "@types/js-cookie": "^3.0.6",
+        "@types/node": "^20.10.6",
+        "@types/react": "^18.2.46",
+        "@types/react-dom": "^18.2.18",
+        "@typescript-eslint/eslint-plugin": "^6.17.0",
+        "@typescript-eslint/parser": "^6.17.0",
+        "autoprefixer": "^10.4.16",
+        "eslint": "^8.56.0",
+        "eslint-config-next": "14.1.0",
+        "eslint-config-prettier": "^9.1.0",
+        "postcss": "^8.4.33",
+        "prettier": "^3.1.1",
+        "prisma": "^5.8.0",
+        "tailwindcss": "^3.4.1",
+        "tsx": "^4.6.2",
+        "typescript": "^5.3.3"
+    },
+    "engines": {
+        "node": "20.x",
+        "npm": ">=9.0.0"
+    }
+}
+```

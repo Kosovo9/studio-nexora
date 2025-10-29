@@ -91,7 +91,8 @@ model ProcessedImage {
 
 model Payment {
   id              String   @id @default(cuid())
-  userId          String
+  userId          String?
+  userEmail       String
   stripePaymentId String   @unique
   amount          Int      // Amount in cents
   currency        String   @default("usd")
@@ -101,31 +102,36 @@ model Payment {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([userEmail])
   @@index([status])
   @@map("payments")
 }
 
 model Subscription {
   id                   String    @id @default(cuid())
-  userId               String    @unique
-  stripeSubscriptionId String    @unique
-  stripePriceId        String
-  stripeCustomerId     String
+  userId               String?   @unique
+  userEmail            String    @unique
+  stripeSubscriptionId String?   @unique
+  stripePriceId        String?
+  stripeCustomerId     String?
   status               String    // active, canceled, past_due, etc.
-  plan                 String    // basic, pro, vip
-  currentPeriodStart   DateTime
-  currentPeriodEnd     DateTime
+  planType             String    // basic, pro, vip
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
   cancelAtPeriodEnd    Boolean   @default(false)
+  canceledAt           DateTime?
+  lastPaymentAt        DateTime?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userEmail])
   @@index([status])
+  @@index([planType])
   @@map("subscriptions")
 }
 
@@ -154,4 +160,42 @@ model RateLimit {
   @@index([key])
   @@index([resetAt])
   @@map("rate_limits")
+}
+
+model Job {
+  id          String    @id
+  userId      String
+  type        String    // 'image_processing', etc.
+  status      String    @default("queued") // queued, processing, completed, failed
+  progress    Int       @default(0) // 0-100
+  input       Json?     // Job input parameters
+  result      Json?     // Job result data
+  error       String?   // Error message if failed
+  createdAt   DateTime  @default(now())
+  startedAt   DateTime?
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("jobs")
+}
+
+model CheckoutLog {
+  id          String   @id @default(cuid())
+  userEmail   String
+  priceId     String
+  planType    String
+  sessionId   String   @unique
+  status      String   // created, completed, failed
+  ip          String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userEmail])
+  @@index([sessionId])
+  @@index([status])
+  @@map("checkout_logs")
 }

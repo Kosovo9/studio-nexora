@@ -1,0 +1,7 @@
+[2025-10-27 22:49:29] [INFO] Starting Nexora Platform build process
+[2025-10-27 22:49:29] [INFO] Validating prerequisites
+[2025-10-27 22:49:29] [INFO] Node.js version: v22.20.0
+[2025-10-27 22:49:29] [INFO] Corepack enabled
+[2025-10-27 22:49:29] [INFO] Found 3 projects to process
+[2025-10-27 22:49:29] [ERROR] Build process failed: Cannot bind argument to parameter 'Path' because it is an empty string.
+[2025-10-27 22:49:29] [INFO] Build summary written to build-summary.txt

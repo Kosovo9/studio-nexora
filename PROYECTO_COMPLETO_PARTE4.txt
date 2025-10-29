@@ -1,0 +1,787 @@
+PROYECTO STUDIO NEXORA - CONTENIDO COMPLETO (PARTE 4)
+========================================================
+
+[src/components]
+(directorio)
+
+[src/components/Providers.tsx]
+```
+'use client'
+
+import { SessionProvider } from 'next-auth/react'
+import { ThemeProvider } from 'next-themes'
+import { NextIntlClientProvider } from 'next-intl'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { useState } from 'react'
+
+interface ProvidersProps {
+  children: React.ReactNode
+  session?: any
+  locale?: string
+  messages?: any
+}
+
+export function Providers({ children, session, locale = 'en', messages }: ProvidersProps) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 60 * 1000, // 1 minute
+            retry: 1,
+          },
+        },
+      })
+  )
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider session={session}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </ThemeProvider>
+      </SessionProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  )
+}
+```
+
+[src/components/ImageUpload.tsx]
+```
+'use client'
+
+import React, { useCallback, useState, forwardRef } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Upload, X, Image as ImageIcon, AlertCircle } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
+
+interface ImageUploadProps {
+  onImageUpload: (file: File) => void
+  selectedImage: File | null
+  maxSize?: number // in MB
+  acceptedFormats?: string[]
+}
+
+export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
+  ({ onImageUpload, selectedImage, maxSize = 10, acceptedFormats = ['image/jpeg', 'image/png', 'image/webp'] }, ref) => {
+    const [error, setError] = useState<string | null>(null)
+    const [isDragActive, setIsDragActive] = useState(false)
+
+    const onDrop = useCallback(
+      (acceptedFiles: File[], rejectedFiles: any[]) => {
+        setError(null)
+
+        if (rejectedFiles.length > 0) {
+          const rejection = rejectedFiles[0]
+          if (rejection.errors[0]?.code === 'file-too-large') {
+            setError(`El archivo es demasiado grande. Máximo ${maxSize}MB permitido.`)
+          } else if (rejection.errors[0]?.code === 'file-invalid-type') {
+            setError('Formato de archivo no soportado. Use JPG, PNG o WebP.')
+          } else {
+            setError('Error al cargar el archivo. Inténtelo de nuevo.')
+          }
+          return
+        }
+
+        if (acceptedFiles.length > 0) {
+          const file = acceptedFiles[0]
+          onImageUpload(file)
+        }
+      },
+      [onImageUpload, maxSize]
+    )
+
+    const { getRootProps, getInputProps, isDragActive: dropzoneActive } = useDropzone({
+      onDrop,
+      accept: {
+        'image/*': acceptedFormats.map(format => format.split('/')[1])
+      },
+      maxSize: maxSize * 1024 * 1024, // Convert MB to bytes
+      multiple: false,
+      onDragEnter: () => setIsDragActive(true),
+      onDragLeave: () => setIsDragActive(false),
+    })
+
+    const removeImage = () => {
+      setError(null)
+      // Reset file input if ref is available
+      if (ref && 'current' in ref && ref.current) {
+        ref.current.value = ''
+      }
+    }
+
+    return (
+      <div className="w-full">
+        <AnimatePresence>
+          {!selectedImage ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              {...getRootProps()}
+              className={`
+                relative border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-300
+                ${isDragActive || dropzoneActive
+                  ? 'border-purple-400 bg-purple-500/10 scale-105'
+                  : 'border-white/30 hover:border-purple-400 hover:bg-white/5'
+                }
+              `}
+            >
+              <input {...getInputProps()} ref={ref} />
+              
+              <motion.div
+                animate={isDragActive ? { scale: 1.1 } : { scale: 1 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-col items-center gap-4"
+              >
+                <div className={`
+                  p-4 rounded-full transition-all duration-300
+                  ${isDragActive 
+                    ? 'bg-purple-500 text-white' 
+                    : 'bg-white/10 text-purple-300'
+                  }
+                `}>
+                  <Upload className="h-8 w-8" />
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {isDragActive ? '¡Suelta tu imagen aquí!' : 'Sube tu imagen'}
+                  </h3>
+                  <p className="text-purple-200 text-sm">
+                    Arrastra y suelta o{' '}
+                    <span className="text-purple-400 font-medium">haz clic para seleccionar</span>
+                  </p>
+                  <p className="text-purple-300 text-xs mt-2">
+                    JPG, PNG, WebP hasta {maxSize}MB
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Animated background effect */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-blue-500/20 opacity-0"
+                animate={isDragActive ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
+            >
+              <div className="flex items-start gap-4">
+                <div className="relative flex-shrink-0">
+                  <img
+                    src={URL.createObjectURL(selectedImage)}
+                    alt="Preview"
+                    className="w-20 h-20 object-cover rounded-xl"
+                  />
+                  <div className="absolute -top-2 -right-2">
+                    <Button
+                      onClick={removeImage}
+                      size="sm"
+                      variant="destructive"
+                      className="h-6 w-6 rounded-full p-0"
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-white font-medium truncate">
+                    {selectedImage.name}
+                  </h4>
+                  <p className="text-purple-200 text-sm">
+                    {(selectedImage.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <div className="h-2 bg-white/20 rounded-full flex-1">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: '100%' }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full"
+                      />
+                    </div>
+                    <span className="text-green-400 text-xs font-medium">
+                      Cargado
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Error Message */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3"
+            >
+              <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
+              <p className="text-red-200 text-sm">{error}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    )
+  }
+)
+
+ImageUpload.displayName = 'ImageUpload'
+```
+
+[src/components/ProcessedImage.tsx]
+```
+'use client'
+
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Download, Trash2, Eye, Calendar, Zap, ExternalLink } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
+import { useToast } from '@/components/ui/Toast'
+
+interface ProcessedImageProps {
+  image: {
+    id: string
+    originalUrl: string
+    processedUrl: string
+    prompt: string
+    timestamp: Date
+    status: 'processing' | 'completed' | 'failed'
+  }
+  onDelete: (id: string) => void
+}
+
+export function ProcessedImage({ image, onDelete }: ProcessedImageProps) {
+  const [isHovered, setIsHovered] = useState(false)
+  const [showOriginal, setShowOriginal] = useState(false)
+  const { addToast } = useToast()
+
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(image.processedUrl)
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `nexora-processed-${image.id}.png`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+      
+      addToast({
+        type: 'success',
+        title: 'Descarga iniciada',
+        message: 'La imagen se está descargando',
+        duration: 3000
+      })
+    } catch (error) {
+      addToast({
+        type: 'error',
+        title: 'Error de descarga',
+        message: 'No se pudo descargar la imagen',
+        duration: 4000
+      })
+    }
+  }
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Imagen procesada con Studio Nexora',
+          text: `Mira esta increíble transformación: "${image.prompt}"`,
+          url: window.location.href
+        })
+      } catch (error) {
+        // User cancelled sharing
+      }
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href)
+      addToast({
+        type: 'info',
+        title: 'Enlace copiado',
+        message: 'El enlace se ha copiado al portapapeles',
+        duration: 3000
+      })
+    }
+  }
+
+  const formatDate = (date: Date) => {
+    return new Intl.DateTimeFormat('es-ES', {
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date)
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'text-green-400 bg-green-400/10 border-green-400/20'
+      case 'processing':
+        return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20'
+      case 'failed':
+        return 'text-red-400 bg-red-400/10 border-red-400/20'
+      default:
+        return 'text-gray-400 bg-gray-400/10 border-gray-400/20'
+    }
+  }
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'Completado'
+      case 'processing':
+        return 'Procesando'
+      case 'failed':
+        return 'Error'
+      default:
+        return 'Desconocido'
+    }
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.3 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className="bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/20 group"
+    >
+      {/* Image Container */}
+      <div className="relative aspect-square overflow-hidden">
+        <motion.img
+          src={showOriginal ? image.originalUrl : image.processedUrl}
+          alt={image.prompt}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          animate={{ scale: isHovered ? 1.05 : 1 }}
+          transition={{ duration: 0.3 }}
+        />
+        
+        {/* Overlay */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+          className="absolute inset-0 bg-black/50 flex items-center justify-center"
+        >
+          <div className="flex gap-2">
+            <Button
+              onClick={() => setShowOriginal(!showOriginal)}
+              size="sm"
+              variant="secondary"
+              className="bg-white/20 hover:bg-white/30 text-white border-white/20"
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={handleDownload}
+              size="sm"
+              variant="secondary"
+              className="bg-white/20 hover:bg-white/30 text-white border-white/20"
+            >
+              <Download className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={handleShare}
+              size="sm"
+              variant="secondary"
+              className="bg-white/20 hover:bg-white/30 text-white border-white/20"
+            >
+              <ExternalLink className="h-4 w-4" />
+            </Button>
+          </div>
+        </motion.div>
+
+        {/* Status Badge */}
+        <div className="absolute top-3 left-3">
+          <span className={`
+            inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border
+            ${getStatusColor(image.status)}
+          `}>
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            {getStatusText(image.status)}
+          </span>
+        </div>
+
+        {/* Toggle Indicator */}
+        {showOriginal && (
+          <div className="absolute top-3 right-3">
+            <span className="bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+              Original
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="p-4">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <h3 className="text-white font-medium text-sm line-clamp-2 flex-1">
+            {image.prompt}
+          </h3>
+          <Button
+            onClick={() => onDelete(image.id)}
+            size="sm"
+            variant="ghost"
+            className="text-red-400 hover:text-red-300 hover:bg-red-400/10 flex-shrink-0"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-purple-200">
+          <div className="flex items-center gap-1">
+            <Calendar className="h-3 w-3" />
+            <span>{formatDate(image.timestamp)}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Zap className="h-3 w-3 text-yellow-400" />
+            <span>IA</span>
+          </div>
+        </div>
+
+        {/* Progress bar for processing images */}
+        {image.status === 'processing' && (
+          <div className="mt-3">
+            <div className="h-1 bg-white/20 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-gradient-to-r from-blue-400 to-purple-500"
+                initial={{ width: '0%' }}
+                animate={{ width: '70%' }}
+                transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  )
+}
+```
+
+[src/components/layout]
+(directorio)
+
+[src/components/layout/Header.tsx]
+```
+'use client'
+
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useSession, signIn, signOut } from 'next-auth/react'
+import { 
+  Menu, 
+  X, 
+  User, 
+  Settings, 
+  LogOut, 
+  Sparkles,
+  Bell,
+  Search,
+  Moon,
+  Sun
+} from 'lucide-react'
+import { useTheme } from 'next-themes'
+import { Button } from '@/components/ui/Button'
+import { Avatar } from '@/components/ui/Avatar'
+
+export function Header() {
+  const { data: session } = useSession()
+  const { theme, setTheme } = useTheme()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+
+  const navigation = [
+    { name: 'Inicio', href: '/' },
+    { name: 'Galería', href: '/gallery' },
+    { name: 'Precios', href: '/pricing' },
+    { name: 'Documentación', href: '/docs' },
+  ]
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const toggleProfileMenu = () => {
+    setIsProfileMenuOpen(!isProfileMenuOpen)
+  }
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark')
+  }
+
+  return (
+    <header className="sticky top-0 z-50 bg-black/20 backdrop-blur-xl border-b border-white/10">
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-2"
+          >
+            <div className="relative">
+              <Sparkles className="h-8 w-8 text-purple-400" />
+              <motion.div
+                className="absolute inset-0"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              >
+                <Sparkles className="h-8 w-8 text-blue-400 opacity-50" />
+              </motion.div>
+            </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              Studio Nexora
+            </span>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navigation.map((item, index) => (
+              <motion.a
+                key={item.name}
+                href={item.href}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="text-white/80 hover:text-white transition-colors duration-200 font-medium"
+              >
+                {item.name}
+              </motion.a>
+            ))}
+          </div>
+
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center gap-4">
+            {/* Search */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white/80 hover:text-white hover:bg-white/10"
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+
+            {/* Theme Toggle */}
+            <Button
+              onClick={toggleTheme}
+              variant="ghost"
+              size="sm"
+              className="text-white/80 hover:text-white hover:bg-white/10"
+            >
+              {theme === 'dark' ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </Button>
+
+            {/* Notifications */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white/80 hover:text-white hover:bg-white/10 relative"
+            >
+              <Bell className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full animate-pulse" />
+            </Button>
+
+            {/* User Menu */}
+            {session ? (
+              <div className="relative">
+                <Button
+                  onClick={toggleProfileMenu}
+                  variant="ghost"
+                  className="flex items-center gap-2 text-white hover:bg-white/10"
+                >
+                  <Avatar
+                    src={session.user?.image}
+                    alt={session.user?.name || 'User'}
+                    size="sm"
+                  />
+                  <span className="hidden lg:block">{session.user?.name}</span>
+                </Button>
+
+                <AnimatePresence>
+                  {isProfileMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 mt-2 w-48 bg-black/90 backdrop-blur-xl rounded-xl border border-white/20 shadow-xl"
+                    >
+                      <div className="py-2">
+                        <a
+                          href="/profile"
+                          className="flex items-center gap-3 px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <User className="h-4 w-4" />
+                          Perfil
+                        </a>
+                        <a
+                          href="/settings"
+                          className="flex items-center gap-3 px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <Settings className="h-4 w-4" />
+                          Configuración
+                        </a>
+                        <hr className="my-2 border-white/20" />
+                        <button
+                          onClick={() => signOut()}
+                          className="flex items-center gap-3 px-4 py-2 text-red-400 hover:text-red-300 hover:bg-red-400/10 transition-colors w-full text-left"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          Cerrar Sesión
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => signIn()}
+                  variant="ghost"
+                  className="text-white hover:bg-white/10"
+                >
+                  Iniciar Sesión
+                </Button>
+                <Button
+                  onClick={() => signIn()}
+                  className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
+                >
+                  Registrarse
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <Button
+              onClick={toggleMobileMenu}
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/10"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden border-t border-white/10 mt-4 pt-4 pb-4"
+            >
+              <div className="space-y-4">
+                {navigation.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="block text-white/80 hover:text-white transition-colors font-medium"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </a>
+                ))}
+                
+                <hr className="border-white/20" />
+                
+                {session ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 py-2">
+                      <Avatar
+                        src={session.user?.image}
+                        alt={session.user?.name || 'User'}
+                        size="sm"
+                      />
+                      <span className="text-white">{session.user?.name}</span>
+                    </div>
+                    <a
+                      href="/profile"
+                      className="block text-white/80 hover:text-white transition-colors"
+                    >
+                      Perfil
+                    </a>
+                    <a
+                      href="/settings"
+                      className="block text-white/80 hover:text-white transition-colors"
+                    >
+                      Configuración
+                    </a>
+                    <button
+                      onClick={() => signOut()}
+                      className="block text-red-400 hover:text-red-300 transition-colors"
+                    >
+                      Cerrar Sesión
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => signIn()}
+                      variant="ghost"
+                      className="w-full text-white hover:bg-white/10"
+                    >
+                      Iniciar Sesión
+                    </Button>
+                    <Button
+                      onClick={() => signIn()}
+                      className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
+                    >
+                      Registrarse
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </header>
+  )
+}
+```

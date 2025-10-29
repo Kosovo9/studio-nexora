@@ -1,0 +1,812 @@
+PROYECTO STUDIO NEXORA - CONTENIDO COMPLETO (PARTE 7)
+========================================================
+
+[src/components/3d]
+(directorio)
+
+[src/components/3d/EarthCanvas.tsx]
+```
+'use client'
+
+import React, { Suspense, useRef } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { OrbitControls, Sphere, MeshDistortMaterial } from '@react-three/drei'
+import { motion } from 'framer-motion'
+import * as THREE from 'three'
+
+function Earth() {
+  const meshRef = useRef<THREE.Mesh>(null)
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1
+      meshRef.current.rotation.y += 0.005
+    }
+  })
+
+  return (
+    <Sphere ref={meshRef} args={[1, 100, 200]} scale={2.5}>
+      <MeshDistortMaterial
+        color="#8B5CF6"
+        attach="material"
+        distort={0.3}
+        speed={1.5}
+        roughness={0.4}
+        metalness={0.8}
+      />
+    </Sphere>
+  )
+}
+
+function FloatingParticles() {
+  const particlesRef = useRef<THREE.Points>(null)
+
+  useFrame((state) => {
+    if (particlesRef.current) {
+      particlesRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.1
+      particlesRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1
+    }
+  })
+
+  const particleCount = 1000
+  const positions = new Float32Array(particleCount * 3)
+
+  for (let i = 0; i < particleCount; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 10
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 10
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 10
+  }
+
+  return (
+    <points ref={particlesRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={particleCount}
+          array={positions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial size={0.02} color="#3B82F6" transparent opacity={0.6} />
+    </points>
+  )
+}
+
+interface EarthCanvasProps {
+  className?: string
+}
+
+export default function EarthCanvas({ className }: EarthCanvasProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, ease: 'easeOut' }}
+      className={className}
+    >
+      <Canvas
+        camera={{ position: [0, 0, 5], fov: 75 }}
+        style={{ height: '100%', width: '100%' }}
+      >
+        <Suspense fallback={null}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          <pointLight position={[-10, -10, -10]} intensity={0.5} />
+          
+          <Earth />
+          <FloatingParticles />
+          
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            autoRotate
+            autoRotateSpeed={0.5}
+          />
+        </Suspense>
+      </Canvas>
+    </motion.div>
+  )
+}
+```
+
+[src/components/3d/ParticleField.tsx]
+```
+'use client'
+
+import React, { useRef, useMemo } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Points, PointMaterial } from '@react-three/drei'
+import * as THREE from 'three'
+import { motion } from 'framer-motion'
+
+function Particles({ count = 5000 }: { count?: number }) {
+  const mesh = useRef<THREE.Points>(null)
+  
+  const particles = useMemo(() => {
+    const temp = new Float32Array(count * 3)
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3
+      temp[i3] = (Math.random() - 0.5) * 20
+      temp[i3 + 1] = (Math.random() - 0.5) * 20
+      temp[i3 + 2] = (Math.random() - 0.5) * 20
+    }
+    return temp
+  }, [count])
+
+  useFrame((state) => {
+    if (mesh.current) {
+      mesh.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.1
+      mesh.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1
+    }
+  })
+
+  return (
+    <Points ref={mesh} positions={particles} stride={3} frustumCulled={false}>
+      <PointMaterial
+        transparent
+        color="#8B5CF6"
+        size={0.005}
+        sizeAttenuation={true}
+        depthWrite={false}
+        opacity={0.8}
+      />
+    </Points>
+  )
+}
+
+interface ParticleFieldProps {
+  className?: string
+  particleCount?: number
+}
+
+export function ParticleField({ className, particleCount = 5000 }: ParticleFieldProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2 }}
+      className={className}
+    >
+      <Canvas camera={{ position: [0, 0, 1] }}>
+        <Particles count={particleCount} />
+      </Canvas>
+    </motion.div>
+  )
+}
+```
+
+[src/components/3d/FloatingCube.tsx]
+```
+'use client'
+
+import React, { useRef } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Box, MeshWobbleMaterial } from '@react-three/drei'
+import { motion } from 'framer-motion'
+import * as THREE from 'three'
+
+function AnimatedCube() {
+  const meshRef = useRef<THREE.Mesh>(null)
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime) * 0.3
+      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.3
+      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.1
+    }
+  })
+
+  return (
+    <Box ref={meshRef} args={[1, 1, 1]}>
+      <MeshWobbleMaterial
+        color="#3B82F6"
+        attach="material"
+        factor={0.6}
+        speed={2}
+        roughness={0.1}
+        metalness={0.8}
+      />
+    </Box>
+  )
+}
+
+interface FloatingCubeProps {
+  className?: string
+}
+
+export function FloatingCube({ className }: FloatingCubeProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, rotateY: -90 }}
+      animate={{ opacity: 1, rotateY: 0 }}
+      transition={{ duration: 1, ease: 'easeOut' }}
+      className={className}
+    >
+      <Canvas camera={{ position: [0, 0, 3] }}>
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[10, 10, 5]} intensity={1} />
+        <AnimatedCube />
+      </Canvas>
+    </motion.div>
+  )
+}
+```
+
+[src/lib]
+(directorio)
+
+[src/lib/utils.ts]
+```
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+export function formatBytes(bytes: number, decimals = 2) {
+  if (bytes === 0) return '0 Bytes'
+
+  const k = 1024
+  const dm = decimals < 0 ? 0 : decimals
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+}
+
+export function formatDate(date: Date | string | number) {
+  return new Intl.DateTimeFormat('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(date))
+}
+
+export function formatRelativeTime(date: Date | string | number) {
+  const now = new Date()
+  const target = new Date(date)
+  const diffInSeconds = Math.floor((now.getTime() - target.getTime()) / 1000)
+
+  if (diffInSeconds < 60) {
+    return 'hace unos segundos'
+  }
+
+  const diffInMinutes = Math.floor(diffInSeconds / 60)
+  if (diffInMinutes < 60) {
+    return `hace ${diffInMinutes} minuto${diffInMinutes > 1 ? 's' : ''}`
+  }
+
+  const diffInHours = Math.floor(diffInMinutes / 60)
+  if (diffInHours < 24) {
+    return `hace ${diffInHours} hora${diffInHours > 1 ? 's' : ''}`
+  }
+
+  const diffInDays = Math.floor(diffInHours / 24)
+  if (diffInDays < 30) {
+    return `hace ${diffInDays} día${diffInDays > 1 ? 's' : ''}`
+  }
+
+  const diffInMonths = Math.floor(diffInDays / 30)
+  if (diffInMonths < 12) {
+    return `hace ${diffInMonths} mes${diffInMonths > 1 ? 'es' : ''}`
+  }
+
+  const diffInYears = Math.floor(diffInMonths / 12)
+  return `hace ${diffInYears} año${diffInYears > 1 ? 's' : ''}`
+}
+
+export function generateId(length = 8) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let result = ''
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return result
+}
+
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeout: NodeJS.Timeout | null = null
+  
+  return (...args: Parameters<T>) => {
+    if (timeout) {
+      clearTimeout(timeout)
+    }
+    
+    timeout = setTimeout(() => {
+      func(...args)
+    }, wait)
+  }
+}
+
+export function throttle<T extends (...args: any[]) => any>(
+  func: T,
+  limit: number
+): (...args: Parameters<T>) => void {
+  let inThrottle: boolean
+  
+  return (...args: Parameters<T>) => {
+    if (!inThrottle) {
+      func(...args)
+      inThrottle = true
+      setTimeout(() => (inThrottle = false), limit)
+    }
+  }
+}
+
+export function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max)
+}
+
+export function lerp(start: number, end: number, factor: number) {
+  return start + (end - start) * factor
+}
+
+export function randomBetween(min: number, max: number) {
+  return Math.random() * (max - min) + min
+}
+
+export function isValidEmail(email: string) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
+export function isValidUrl(url: string) {
+  try {
+    new URL(url)
+    return true
+  } catch {
+    return false
+  }
+}
+
+export function copyToClipboard(text: string) {
+  if (navigator.clipboard) {
+    return navigator.clipboard.writeText(text)
+  } else {
+    // Fallback for older browsers
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+    try {
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      return Promise.resolve()
+    } catch (err) {
+      document.body.removeChild(textArea)
+      return Promise.reject(err)
+    }
+  }
+}
+
+export function downloadFile(data: Blob | string, filename: string, type?: string) {
+  const blob = data instanceof Blob ? data : new Blob([data], { type: type || 'text/plain' })
+  const url = URL.createObjectURL(blob)
+  
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  
+  URL.revokeObjectURL(url)
+}
+
+export function getImageDimensions(file: File): Promise<{ width: number; height: number }> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      resolve({ width: img.naturalWidth, height: img.naturalHeight })
+    }
+    img.onerror = reject
+    img.src = URL.createObjectURL(file)
+  })
+}
+
+export function resizeImage(
+  file: File,
+  maxWidth: number,
+  maxHeight: number,
+  quality = 0.8
+): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    const img = new Image()
+
+    img.onload = () => {
+      const { width, height } = img
+      
+      // Calculate new dimensions
+      let newWidth = width
+      let newHeight = height
+      
+      if (width > height) {
+        if (width > maxWidth) {
+          newHeight = (height * maxWidth) / width
+          newWidth = maxWidth
+        }
+      } else {
+        if (height > maxHeight) {
+          newWidth = (width * maxHeight) / height
+          newHeight = maxHeight
+        }
+      }
+      
+      canvas.width = newWidth
+      canvas.height = newHeight
+      
+      ctx?.drawImage(img, 0, 0, newWidth, newHeight)
+      
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(blob)
+          } else {
+            reject(new Error('Failed to resize image'))
+          }
+        },
+        file.type,
+        quality
+      )
+    }
+    
+    img.onerror = reject
+    img.src = URL.createObjectURL(file)
+  })
+}
+```
+
+[src/lib/constants.ts]
+```
+export const APP_CONFIG = {
+  name: 'Studio Nexora',
+  description: 'Transformamos tus imágenes con el poder de la inteligencia artificial',
+  version: '1.0.0',
+  author: 'Studio Nexora Team',
+  url: 'https://studio-nexora.com',
+  email: 'hello@studio-nexora.com',
+  social: {
+    github: 'https://github.com/studio-nexora',
+    twitter: 'https://twitter.com/studio_nexora',
+    linkedin: 'https://linkedin.com/company/studio-nexora',
+  },
+} as const
+
+export const SUPPORTED_IMAGE_FORMATS = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/bmp',
+  'image/tiff',
+] as const
+
+export const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+
+export const PROCESSING_TYPES = {
+  ENHANCE: 'enhance',
+  UPSCALE: 'upscale',
+  COLORIZE: 'colorize',
+  REMOVE_BG: 'remove_bg',
+  STYLE_TRANSFER: 'style_transfer',
+  FACE_ENHANCE: 'face_enhance',
+  NOISE_REDUCTION: 'noise_reduction',
+  SUPER_RESOLUTION: 'super_resolution',
+} as const
+
+export const QUALITY_PRESETS = {
+  LOW: { quality: 0.6, maxWidth: 1024, maxHeight: 1024 },
+  MEDIUM: { quality: 0.8, maxWidth: 2048, maxHeight: 2048 },
+  HIGH: { quality: 0.9, maxWidth: 4096, maxHeight: 4096 },
+  ULTRA: { quality: 1.0, maxWidth: 8192, maxHeight: 8192 },
+} as const
+
+export const ANIMATION_VARIANTS = {
+  fadeIn: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+  },
+  slideUp: {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  },
+  slideDown: {
+    initial: { opacity: 0, y: -20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 20 },
+  },
+  slideLeft: {
+    initial: { opacity: 0, x: 20 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -20 },
+  },
+  slideRight: {
+    initial: { opacity: 0, x: -20 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 20 },
+  },
+  scale: {
+    initial: { opacity: 0, scale: 0.8 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.8 },
+  },
+  rotate: {
+    initial: { opacity: 0, rotate: -10 },
+    animate: { opacity: 1, rotate: 0 },
+    exit: { opacity: 0, rotate: 10 },
+  },
+} as const
+
+export const TOAST_DURATION = {
+  SHORT: 3000,
+  MEDIUM: 5000,
+  LONG: 8000,
+} as const
+
+export const BREAKPOINTS = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  '2xl': 1536,
+} as const
+
+export const COLORS = {
+  primary: {
+    50: '#f5f3ff',
+    100: '#ede9fe',
+    200: '#ddd6fe',
+    300: '#c4b5fd',
+    400: '#a78bfa',
+    500: '#8b5cf6',
+    600: '#7c3aed',
+    700: '#6d28d9',
+    800: '#5b21b6',
+    900: '#4c1d95',
+  },
+  secondary: {
+    50: '#eff6ff',
+    100: '#dbeafe',
+    200: '#bfdbfe',
+    300: '#93c5fd',
+    400: '#60a5fa',
+    500: '#3b82f6',
+    600: '#2563eb',
+    700: '#1d4ed8',
+    800: '#1e40af',
+    900: '#1e3a8a',
+  },
+} as const
+
+export const API_ENDPOINTS = {
+  UPLOAD: '/api/upload',
+  PROCESS: '/api/process',
+  DOWNLOAD: '/api/download',
+  STATUS: '/api/status',
+  HISTORY: '/api/history',
+  USER: '/api/user',
+  AUTH: '/api/auth',
+} as const
+
+export const LOCAL_STORAGE_KEYS = {
+  THEME: 'nexora_theme',
+  SETTINGS: 'nexora_settings',
+  HISTORY: 'nexora_history',
+  USER_PREFERENCES: 'nexora_user_preferences',
+} as const
+
+export const SESSION_STORAGE_KEYS = {
+  UPLOAD_PROGRESS: 'nexora_upload_progress',
+  PROCESSING_STATUS: 'nexora_processing_status',
+} as const
+```
+
+[src/lib/types.ts]
+```
+export interface User {
+  id: string
+  email: string
+  name: string
+  avatar?: string
+  plan: 'free' | 'pro' | 'enterprise'
+  credits: number
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface ProcessedImage {
+  id: string
+  originalUrl: string
+  processedUrl: string
+  thumbnailUrl?: string
+  filename: string
+  originalSize: number
+  processedSize: number
+  processingType: ProcessingType
+  status: ProcessingStatus
+  progress: number
+  metadata: ImageMetadata
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface ImageMetadata {
+  width: number
+  height: number
+  format: string
+  colorSpace?: string
+  hasAlpha?: boolean
+  dpi?: number
+  exif?: Record<string, any>
+}
+
+export type ProcessingType = 
+  | 'enhance'
+  | 'upscale'
+  | 'colorize'
+  | 'remove_bg'
+  | 'style_transfer'
+  | 'face_enhance'
+  | 'noise_reduction'
+  | 'super_resolution'
+
+export type ProcessingStatus = 
+  | 'pending'
+  | 'processing'
+  | 'completed'
+  | 'failed'
+  | 'cancelled'
+
+export interface ProcessingOptions {
+  type: ProcessingType
+  quality: 'low' | 'medium' | 'high' | 'ultra'
+  preserveOriginal: boolean
+  outputFormat?: 'jpeg' | 'png' | 'webp'
+  customSettings?: Record<string, any>
+}
+
+export interface UploadProgress {
+  loaded: number
+  total: number
+  percentage: number
+  speed: number
+  timeRemaining: number
+}
+
+export interface ProcessingProgress {
+  stage: string
+  percentage: number
+  estimatedTime: number
+  currentOperation: string
+}
+
+export interface ApiResponse<T = any> {
+  success: boolean
+  data?: T
+  error?: string
+  message?: string
+}
+
+export interface PaginatedResponse<T> {
+  data: T[]
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    totalPages: number
+    hasNext: boolean
+    hasPrev: boolean
+  }
+}
+
+export interface Settings {
+  theme: 'light' | 'dark' | 'system'
+  language: 'es' | 'en'
+  autoSave: boolean
+  notifications: {
+    email: boolean
+    push: boolean
+    processing: boolean
+    marketing: boolean
+  }
+  privacy: {
+    analytics: boolean
+    cookies: boolean
+  }
+  processing: {
+    defaultQuality: 'low' | 'medium' | 'high' | 'ultra'
+    autoEnhance: boolean
+    preserveMetadata: boolean
+  }
+}
+
+export interface Stats {
+  totalImages: number
+  totalProcessed: number
+  totalSize: number
+  creditsUsed: number
+  creditsRemaining: number
+  processingTime: number
+  favoriteType: ProcessingType
+  monthlyUsage: {
+    month: string
+    images: number
+    credits: number
+  }[]
+}
+
+export interface Notification {
+  id: string
+  type: 'info' | 'success' | 'warning' | 'error'
+  title: string
+  message: string
+  read: boolean
+  createdAt: Date
+  action?: {
+    label: string
+    url: string
+  }
+}
+
+export interface Plan {
+  id: string
+  name: string
+  price: number
+  currency: string
+  interval: 'month' | 'year'
+  credits: number
+  features: string[]
+  popular?: boolean
+  maxFileSize: number
+  maxResolution: number
+  supportLevel: 'basic' | 'priority' | 'dedicated'
+}
+
+export interface PaymentMethod {
+  id: string
+  type: 'card' | 'paypal' | 'bank'
+  last4?: string
+  brand?: string
+  expiryMonth?: number
+  expiryYear?: number
+  isDefault: boolean
+}
+
+export interface Invoice {
+  id: string
+  amount: number
+  currency: string
+  status: 'pending' | 'paid' | 'failed' | 'refunded'
+  date: Date
+  downloadUrl?: string
+  items: {
+    description: string
+    quantity: number
+    unitPrice: number
+    total: number
+  }[]
+}
+
+export interface ActivityLog {
+  id: string
+  action: string
+  description: string
+  metadata?: Record<string, any>
+  ipAddress?: string
+  userAgent?: string
+  createdAt: Date
+}
+```

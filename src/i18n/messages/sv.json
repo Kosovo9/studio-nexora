@@ -1,0 +1,199 @@
+{
+  "common": {
+    "loading": "Laddar...",
+    "error": "Fel",
+    "success": "Framgång",
+    "cancel": "Avbryt",
+    "confirm": "Bekräfta",
+    "save": "Spara",
+    "delete": "Radera",
+    "edit": "Redigera",
+    "close": "Stäng",
+    "back": "Tillbaka",
+    "next": "Nästa",
+    "previous": "Föregående",
+    "upload": "Ladda upp",
+    "download": "Ladda ner",
+    "share": "Dela"
+  },
+  "navigation": {
+    "home": "Hem",
+    "gallery": "Galleri",
+    "pricing": "Priser",
+    "about": "Om oss",
+    "contact": "Kontakt",
+    "login": "Logga in",
+    "signup": "Registrera",
+    "logout": "Logga ut",
+    "profile": "Profil",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Förvandla dina foton med AI",
+    "subtitle": "Skapa professionella studioporträtt med avancerad artificiell intelligens",
+    "cta": "Kom igång nu",
+    "features": {
+      "ai": "Avancerad AI",
+      "fast": "Snabba resultat",
+      "quality": "Professionell kvalitet"
+    }
+  },
+  "upload": {
+    "title": "Ladda upp ditt foto",
+    "dragDrop": "Dra din bild hit",
+    "or": "eller",
+    "clickToUpload": "Klicka för att ladda upp",
+    "supportedFormats": "Format som stöds: JPEG, PNG, WebP",
+    "maxSize": "Max storlek: 10MB",
+    "processing": "Bearbetar...",
+    "selectType": "Välj fototyp",
+    "soloMe": "Bara jag",
+    "meAndPet": "Jag + mitt husdjur",
+    "consent": "Jag accepterar villkoren",
+    "consentRequired": "Du måste acceptera villkoren för att fortsätta",
+    "createStudioPhoto": "Skapa studiofoto",
+    "errors": {
+      "fileSize": "Filen måste vara mindre än 10MB",
+      "fileType": "Ladda upp en giltig bild (JPEG, PNG eller WebP)",
+      "uploadFailed": "Bilduppladdning misslyckades",
+      "processingFailed": "Bildbearbetning misslyckades"
+    }
+  },
+  "pricing": {
+    "title": "Välj din plan",
+    "subtitle": "Flexibla planer för alla dina behov",
+    "monthly": "Månadsvis",
+    "yearly": "Årligen",
+    "save": "Spara",
+    "choosePlan": "Välj plan",
+    "popular": "Populärast",
+    "basic": {
+      "name": "Basic",
+      "price": "$5",
+      "description": "Perfekt för personligt bruk",
+      "features": [
+        "5 foton per månad",
+        "Standardkvalitet",
+        "E-postsupport",
+        "Personligt galleri"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "$15",
+      "description": "Idealisk för proffs",
+      "features": [
+        "50 foton per månad",
+        "Premiumkvalitet",
+        "Prioritetssupport",
+        "Utökat galleri",
+        "Högupplösta nedladdningar",
+        "Ingen vattenstämpel"
+      ]
+    },
+    "vip": {
+      "name": "VIP",
+      "price": "$30",
+      "description": "För kommersiellt bruk",
+      "features": [
+        "Obegränsade foton",
+        "Maximal kvalitet",
+        "24/7 support",
+        "API-åtkomst",
+        "Kommersiell licens",
+        "Prioritetsbearbetning"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Logga in",
+      "subtitle": "Åtkomst till ditt konto",
+      "email": "E-post",
+      "password": "Lösenord",
+      "forgotPassword": "Glömt lösenord?",
+      "noAccount": "Inget konto?",
+      "signupLink": "Registrera här",
+      "loginButton": "Logga in",
+      "magicLink": "Skicka Magic Link",
+      "googleLogin": "Fortsätt med Google"
+    },
+    "signup": {
+      "title": "Skapa konto",
+      "subtitle": "Gå med i Studio Nexora",
+      "name": "Fullständigt namn",
+      "email": "E-post",
+      "password": "Lösenord",
+      "confirmPassword": "Bekräfta lösenord",
+      "hasAccount": "Har redan ett konto?",
+      "loginLink": "Logga in här",
+      "signupButton": "Skapa konto",
+      "terms": "Genom att registrera accepterar du våra",
+      "termsLink": "Villkor",
+      "privacy": "och",
+      "privacyLink": "Integritetspolicy"
+    },
+    "reset": {
+      "title": "Återställ lösenord",
+      "subtitle": "Vi skickar dig en länk för att återställa ditt lösenord",
+      "email": "E-post",
+      "sendLink": "Skicka länk",
+      "backToLogin": "Tillbaka till inloggning",
+      "checkEmail": "Kontrollera din e-post",
+      "emailSent": "Vi har skickat en länk för lösenordsåterställning"
+    }
+  },
+  "admin": {
+    "title": "Adminpanel",
+    "dashboard": "Dashboard",
+    "users": "Användare",
+    "orders": "Beställningar",
+    "settings": "Inställningar",
+    "analytics": "Analys",
+    "content": "Innehåll",
+    "pricing": "Priser",
+    "features": "Funktioner",
+    "assets": "Tillgångar",
+    "colors": "Färger",
+    "theme": "Tema",
+    "languages": "Språk",
+    "logs": "Loggar",
+    "metrics": "Mätvärden"
+  },
+  "footer": {
+    "company": "Företag",
+    "about": "Om oss",
+    "careers": "Karriärer",
+    "contact": "Kontakt",
+    "legal": "Juridiskt",
+    "terms": "Användarvillkor",
+    "privacy": "Integritetspolicy",
+    "refunds": "Återbetalningspolicy",
+    "intellectual": "Immateriella rättigheter",
+    "aiUsage": "AI-användning",
+    "watermark": "Vattenstämpelpolicy",
+    "limitations": "Begränsningar",
+    "security": "Säkerhet",
+    "support": "Support",
+    "help": "Hjälp",
+    "faq": "Vanliga frågor",
+    "community": "Gemenskap",
+    "copyright": "© 2025 Studio Nexora. Alla rättigheter förbehållna.",
+    "madeWith": "Gjord med ❤️ för kreativa"
+  },
+  "errors": {
+    "404": {
+      "title": "Sidan hittades inte",
+      "description": "Sidan du letar efter finns inte",
+      "backHome": "Tillbaka hem"
+    },
+    "500": {
+      "title": "Serverfel",
+      "description": "Något gick fel på våra servrar",
+      "tryAgain": "Försök igen"
+    },
+    "unauthorized": "Obehörig",
+    "forbidden": "Åtkomst nekad",
+    "rateLimited": "För många förfrågningar. Försök igen senare."
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "common": {
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "close": "閉じる",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "upload": "アップロード",
+    "download": "ダウンロード",
+    "share": "共有"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "gallery": "ギャラリー",
+    "pricing": "料金",
+    "about": "会社概要",
+    "contact": "お問い合わせ",
+    "login": "ログイン",
+    "signup": "新規登録",
+    "logout": "ログアウト",
+    "profile": "プロフィール",
+    "admin": "管理"
+  },
+  "hero": {
+    "title": "AIで写真を変換",
+    "subtitle": "高度な人工知能でプロフェッショナルなスタジオポートレートを作成",
+    "cta": "今すぐ始める",
+    "features": {
+      "ai": "高度なAI",
+      "fast": "高速な結果",
+      "quality": "プロフェッショナル品質"
+    }
+  },
+  "upload": {
+    "title": "写真をアップロード",
+    "dragDrop": "画像をここにドラッグ",
+    "or": "または",
+    "clickToUpload": "クリックしてアップロード",
+    "supportedFormats": "対応形式: JPEG、PNG、WebP",
+    "maxSize": "最大サイズ: 10MB",
+    "processing": "処理中...",
+    "selectType": "写真タイプを選択",
+    "soloMe": "私だけ",
+    "meAndPet": "私とペット",
+    "consent": "利用規約に同意します",
+    "consentRequired": "続行するには利用規約に同意する必要があります",
+    "createStudioPhoto": "スタジオ写真を作成",
+    "errors": {
+      "fileSize": "ファイルサイズは10MB未満である必要があります",
+      "fileType": "有効な画像をアップロードしてください（JPEG、PNG、またはWebP）",
+      "uploadFailed": "画像のアップロードに失敗しました",
+      "processingFailed": "画像の処理に失敗しました"
+    }
+  },
+  "pricing": {
+    "title": "プランを選択",
+    "subtitle": "あらゆるニーズに対応する柔軟なプラン",
+    "monthly": "月額",
+    "yearly": "年額",
+    "save": "節約",
+    "choosePlan": "プランを選択",
+    "popular": "人気",
+    "basic": {
+      "name": "ベーシック",
+      "price": "$5",
+      "description": "個人利用に最適",
+      "features": [
+        "月5枚の写真",
+        "標準品質",
+        "メールサポート",
+        "個人ギャラリー"
+      ]
+    },
+    "pro": {
+      "name": "プロ",
+      "price": "$15",
+      "description": "プロフェッショナルに最適",
+      "features": [
+        "月50枚の写真",
+        "プレミアム品質",
+        "優先サポート",
+        "拡張ギャラリー",
+        "高解像度ダウンロード",
+        "透かしなし"
+      ]
+    },
+    "vip": {
+      "name": "VIP",
+      "price": "$30",
+      "description": "商用利用向け",
+      "features": [
+        "無制限の写真",
+        "最高品質",
+        "24/7サポート",
+        "APIアクセス",
+        "商用ライセンス",
+        "優先処理"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "ログイン",
+      "subtitle": "アカウントにアクセス",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "forgotPassword": "パスワードを忘れましたか？",
+      "noAccount": "アカウントをお持ちでない方",
+      "signupLink": "こちらから登録",
+      "loginButton": "ログイン",
+      "magicLink": "マジックリンクを送信",
+      "googleLogin": "Googleで続行"
+    },
+    "signup": {
+      "title": "アカウント作成",
+      "subtitle": "Studio Nexoraに参加",
+      "name": "フルネーム",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "confirmPassword": "パスワード確認",
+      "hasAccount": "既にアカウントをお持ちですか？",
+      "loginLink": "こちらからログイン",
+      "signupButton": "アカウント作成",
+      "terms": "登録することで、当社の",
+      "termsLink": "利用規約",
+      "privacy": "および",
+      "privacyLink": "プライバシーポリシー"
+    },
+    "reset": {
+      "title": "パスワードリセット",
+      "subtitle": "パスワードリセット用のリンクをお送りします",
+      "email": "メールアドレス",
+      "sendLink": "リンクを送信",
+      "backToLogin": "ログインに戻る",
+      "checkEmail": "メールを確認してください",
+      "emailSent": "パスワードリセットリンクを送信しました"
+    }
+  },
+  "admin": {
+    "title": "管理パネル",
+    "dashboard": "ダッシュボード",
+    "users": "ユーザー",
+    "orders": "注文",
+    "settings": "設定",
+    "analytics": "分析",
+    "content": "コンテンツ",
+    "pricing": "料金",
+    "features": "機能",
+    "assets": "アセット",
+    "colors": "色",
+    "theme": "テーマ",
+    "languages": "言語",
+    "logs": "ログ",
+    "metrics": "メトリクス"
+  },
+  "footer": {
+    "company": "会社",
+    "about": "会社概要",
+    "careers": "採用情報",
+    "contact": "お問い合わせ",
+    "legal": "法的事項",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "refunds": "返金ポリシー",
+    "intellectual": "知的財産",
+    "aiUsage": "AI利用",
+    "watermark": "透かしポリシー",
+    "limitations": "制限事項",
+    "security": "セキュリティ",
+    "support": "サポート",
+    "help": "ヘルプ",
+    "faq": "よくある質問",
+    "community": "コミュニティ",
+    "copyright": "© 2025 Studio Nexora. 全著作権所有。",
+    "madeWith": "クリエイターのために❤️で作成"
+  },
+  "errors": {
+    "404": {
+      "title": "ページが見つかりません",
+      "description": "お探しのページは存在しません",
+      "backHome": "ホームに戻る"
+    },
+    "500": {
+      "title": "サーバーエラー",
+      "description": "サーバーで問題が発生しました",
+      "tryAgain": "再試行"
+    },
+    "unauthorized": "認証されていません",
+    "forbidden": "アクセスが拒否されました",
+    "rateLimited": "リクエストが多すぎます。後でもう一度お試しください。"
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "upload": "Télécharger",
+    "download": "Télécharger",
+    "share": "Partager"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "gallery": "Galerie",
+    "pricing": "Tarifs",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "signup": "S'inscrire",
+    "logout": "Déconnexion",
+    "profile": "Profil",
+    "admin": "Administration"
+  },
+  "hero": {
+    "title": "Transformez vos Photos avec l'IA",
+    "subtitle": "Créez des portraits de studio professionnels avec l'intelligence artificielle avancée",
+    "cta": "Commencer",
+    "features": {
+      "ai": "IA Avancée",
+      "fast": "Résultats Rapides",
+      "quality": "Qualité Professionnelle"
+    }
+  },
+  "upload": {
+    "title": "Téléchargez votre Photo",
+    "dragDrop": "Glissez et déposez votre image ici",
+    "or": "ou",
+    "clickToUpload": "Cliquez pour télécharger",
+    "supportedFormats": "Formats supportés: JPEG, PNG, WebP",
+    "maxSize": "Taille max: 10MB",
+    "processing": "Traitement...",
+    "selectType": "Sélectionnez le type de photo",
+    "soloMe": "Moi Seul",
+    "meAndPet": "Moi + Mon Animal",
+    "consent": "J'accepte les termes et conditions",
+    "consentRequired": "Vous devez accepter les termes pour continuer",
+    "createStudioPhoto": "Créer Photo de Studio",
+    "errors": {
+      "fileSize": "Le fichier doit faire moins de 10MB",
+      "fileType": "Veuillez télécharger une image valide (JPEG, PNG ou WebP)",
+      "uploadFailed": "Échec du téléchargement de l'image",
+      "processingFailed": "Échec du traitement de l'image"
+    }
+  },
+  "pricing": {
+    "title": "Choisissez votre Plan",
+    "subtitle": "Plans flexibles pour tous vos besoins",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "save": "Économisez",
+    "choosePlan": "Choisir le Plan",
+    "popular": "Le Plus Populaire",
+    "basic": {
+      "name": "Basique",
+      "price": "$5",
+      "description": "Parfait pour un usage personnel",
+      "features": [
+        "5 photos par mois",
+        "Qualité standard",
+        "Support par email",
+        "Galerie personnelle"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "$15",
+      "description": "Idéal pour les professionnels",
+      "features": [
+        "50 photos par mois",
+        "Qualité premium",
+        "Support prioritaire",
+        "Galerie avancée",
+        "Téléchargements haute résolution",
+        "Sans filigrane"
+      ]
+    },
+    "vip": {
+      "name": "VIP",
+      "price": "$30",
+      "description": "Pour usage commercial",
+      "features": [
+        "Photos illimitées",
+        "Qualité maximale",
+        "Support 24/7",
+        "Accès API",
+        "Licence commerciale",
+        "Traitement prioritaire"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "subtitle": "Accédez à votre compte",
+      "email": "Email",
+      "password": "Mot de passe",
+      "forgotPassword": "Mot de passe oublié?",
+      "noAccount": "Pas de compte?",
+      "signupLink": "Inscrivez-vous ici",
+      "loginButton": "Se connecter",
+      "magicLink": "Envoyer lien magique",
+      "googleLogin": "Continuer avec Google"
+    },
+    "signup": {
+      "title": "Créer un Compte",
+      "subtitle": "Rejoignez Studio Nexora",
+      "name": "Nom complet",
+      "email": "Email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "hasAccount": "Déjà un compte?",
+      "loginLink": "Connectez-vous ici",
+      "signupButton": "Créer un Compte",
+      "terms": "En vous inscrivant, vous acceptez nos",
+      "termsLink": "Termes et Conditions",
+      "privacy": "et",
+      "privacyLink": "Politique de Confidentialité"
+    },
+    "reset": {
+      "title": "Réinitialiser le Mot de Passe",
+      "subtitle": "Nous vous enverrons un lien pour réinitialiser votre mot de passe",
+      "email": "Email",
+      "sendLink": "Envoyer le Lien",
+      "backToLogin": "Retour à la connexion",
+      "checkEmail": "Vérifiez votre email",
+      "emailSent": "Nous avons envoyé un lien pour réinitialiser votre mot de passe"
+    }
+  },
+  "admin": {
+    "title": "Panneau d'Administration",
+    "dashboard": "Tableau de Bord",
+    "users": "Utilisateurs",
+    "orders": "Commandes",
+    "settings": "Paramètres",
+    "analytics": "Analyses",
+    "content": "Contenu",
+    "pricing": "Tarifs",
+    "features": "Fonctionnalités",
+    "assets": "Ressources",
+    "colors": "Couleurs",
+    "theme": "Thème",
+    "languages": "Langues",
+    "logs": "Journaux",
+    "metrics": "Métriques"
+  },
+  "footer": {
+    "company": "Entreprise",
+    "about": "À propos",
+    "careers": "Carrières",
+    "contact": "Contact",
+    "legal": "Légal",
+    "terms": "Conditions de Service",
+    "privacy": "Politique de Confidentialité",
+    "refunds": "Politique de Remboursement",
+    "intellectual": "Propriété Intellectuelle",
+    "aiUsage": "Utilisation de l'IA",
+    "watermark": "Politique de Filigrane",
+    "limitations": "Limitations",
+    "security": "Sécurité",
+    "support": "Support",
+    "help": "Aide",
+    "faq": "Questions Fréquentes",
+    "community": "Communauté",
+    "copyright": "© 2025 Studio Nexora. Tous droits réservés.",
+    "madeWith": "Fait avec ❤️ pour les créateurs"
+  },
+  "errors": {
+    "404": {
+      "title": "Page non trouvée",
+      "description": "La page que vous cherchez n'existe pas",
+      "backHome": "Retour à l'accueil"
+    },
+    "500": {
+      "title": "Erreur serveur",
+      "description": "Quelque chose s'est mal passé sur nos serveurs",
+      "tryAgain": "Réessayer"
+    },
+    "unauthorized": "Non autorisé",
+    "forbidden": "Accès refusé",
+    "rateLimited": "Trop de requêtes. Réessayez plus tard."
+  }
+}

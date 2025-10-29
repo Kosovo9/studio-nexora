@@ -1,7 +1,10 @@
+const withNextIntl = require('next-intl/plugin')('./src/i18n.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  output: 'standalone',
   images: {
     domains: ['replicate.delivery', 'replicate.com', 'localhost'],
     formats: ['image/avif', 'image/webp'],
@@ -57,4 +60,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

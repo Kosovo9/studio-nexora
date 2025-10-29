@@ -1,0 +1,733 @@
+PROYECTO STUDIO NEXORA - CONTENIDO COMPLETO (PARTE 3)
+========================================================
+
+[src/app/layout.tsx]
+```
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { Providers } from '@/components/Providers'
+import { ToastContainer } from '@/components/ui/Toast'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Studio Nexora - AI Image Processing',
+  description: 'Transform your images with cutting-edge AI technology',
+  keywords: ['AI', 'image processing', 'machine learning', 'photo editing'],
+  authors: [{ name: 'Studio Nexora Team' }],
+  creator: 'Studio Nexora',
+  publisher: 'Studio Nexora',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://studio-nexora.vercel.app'),
+  openGraph: {
+    title: 'Studio Nexora - AI Image Processing',
+    description: 'Transform your images with cutting-edge AI technology',
+    url: 'https://studio-nexora.vercel.app',
+    siteName: 'Studio Nexora',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Studio Nexora - AI Image Processing',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Studio Nexora - AI Image Processing',
+    description: 'Transform your images with cutting-edge AI technology',
+    images: ['/og-image.png'],
+    creator: '@studionexora',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
+  },
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <Providers>
+          {children}
+          <ToastContainer />
+        </Providers>
+      </body>
+    </html>
+  )
+}
+```
+
+[src/app/page.tsx]
+```
+'use client'
+
+import React, { useState, useCallback, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { 
+  Upload, 
+  Download, 
+  Zap, 
+  Sparkles, 
+  Image as ImageIcon, 
+  Settings, 
+  Star,
+  BarChart3,
+  Users,
+  TrendingUp,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Info,
+  Loader2
+} from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { useTranslation } from 'next-intl'
+
+import { Header } from '@/components/layout/Header'
+import { Footer } from '@/components/layout/Footer'
+import { ImageUpload } from '@/components/ImageUpload'
+import { ProcessedImage } from '@/components/ProcessedImage'
+import { ProgressRing } from '@/components/ui/Loading'
+import { SearchInput } from '@/components/ui/SearchInput'
+import { Button } from '@/components/ui/Button'
+import { Modal } from '@/components/ui/Modal'
+import { useToast } from '@/components/ui/Toast'
+import { useStore } from '@/store/useStore'
+import EarthCanvas from '@/components/3d/Earth'
+
+interface ProcessedImageType {
+  id: string
+  originalUrl: string
+  processedUrl: string
+  prompt: string
+  timestamp: Date
+  status: 'processing' | 'completed' | 'failed'
+}
+
+export default function HomePage() {
+  const { data: session } = useSession()
+  const t = useTranslation()
+  const { addToast } = useToast()
+  const { processedImages, addProcessedImage } = useStore()
+  
+  // Estados principales
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [prompt, setPrompt] = useState('')
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [progress, setProgress] = useState<number>(0)
+  const [activeTab, setActiveTab] = useState<'upload' | 'gallery' | 'settings'>('upload')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null)
+  
+  // Estados de carga
+  const [isLoadingStats, setIsLoadingStats] = useState(false)
+  const [isLoadingGallery, setIsLoadingGallery] = useState(false)
+  const [isInitializing, setIsInitializing] = useState(true)
+  
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Efecto de inicialización
+  useEffect(() => {
+    const initializeApp = async () => {
+      setIsInitializing(true)
+      
+      // Simular carga inicial
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      setIsInitializing(false)
+      
+      // Mostrar toast de bienvenida
+      addToast({
+        type: 'success',
+        title: '¡Bienvenido a Studio Nexora!',
+        message: 'Tu plataforma de procesamiento de imágenes con IA está lista.',
+        duration: 5000
+      })
+    }
+
+    initializeApp()
+  }, [addToast])
+
+  const handleImageUpload = useCallback((file: File) => {
+    setSelectedImage(file)
+    addToast({
+      type: 'success',
+      title: 'Imagen cargada',
+      message: `${file.name} se ha cargado correctamente`,
+      duration: 3000
+    })
+  }, [addToast])
+
+  const handleProcessImage = useCallback(async () => {
+    if (!selectedImage || !prompt.trim()) {
+      addToast({
+        type: 'error',
+        title: 'Error',
+        message: 'Por favor selecciona una imagen y proporciona un prompt',
+        duration: 4000
+      })
+      return
+    }
+
+    setIsProcessing(true)
+    setProgress(0)
+
+    try {
+      // Simular progreso de procesamiento
+      const progressInterval = setInterval(() => {
+        setProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval)
+            return 90
+          }
+          return prev + Math.random() * 15
+        })
+      }, 500)
+
+      // Simular llamada a API
+      await new Promise(resolve => setTimeout(resolve, 5000))
+      
+      clearInterval(progressInterval)
+      setProgress(100)
+
+      // Crear imagen procesada simulada
+      const processedImage: ProcessedImageType = {
+        id: Date.now().toString(),
+        originalUrl: URL.createObjectURL(selectedImage),
+        processedUrl: URL.createObjectURL(selectedImage), // En producción sería la URL procesada
+        prompt,
+        timestamp: new Date(),
+        status: 'completed'
+      }
+
+      addProcessedImage(processedImage)
+      
+      addToast({
+        type: 'success',
+        title: 'Procesamiento completado',
+        message: 'Tu imagen ha sido procesada exitosamente',
+        duration: 4000
+      })
+
+      setActiveTab('gallery')
+      
+    } catch (error) {
+      addToast({
+        type: 'error',
+        title: 'Error de procesamiento',
+        message: 'Hubo un error al procesar la imagen. Inténtalo de nuevo.',
+        duration: 5000
+      })
+    } finally {
+      setIsProcessing(false)
+      setProgress(0)
+    }
+  }, [selectedImage, prompt, addProcessedImage, addToast])
+
+  const openModal = (content: React.ReactNode) => {
+    setModalContent(content)
+    setIsModalOpen(true)
+  }
+
+  const handleDeleteImage = (imageId: string) => {
+    openModal(
+      <div className="text-center">
+        <AlertCircle className="mx-auto h-12 w-12 text-red-500 mb-4" />
+        <h3 className="text-lg font-semibold mb-2">Confirmar eliminación</h3>
+        <p className="text-gray-600 mb-6">
+          ¿Estás seguro de que quieres eliminar esta imagen? Esta acción no se puede deshacer.
+        </p>
+        <div className="flex gap-3 justify-center">
+          <Button
+            variant="outline"
+            onClick={() => setIsModalOpen(false)}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={() => {
+              // Aquí iría la lógica de eliminación
+              addToast({
+                type: 'success',
+                title: 'Imagen eliminada',
+                message: 'La imagen ha sido eliminada correctamente',
+                duration: 3000
+              })
+              setIsModalOpen(false)
+            }}
+          >
+            Eliminar
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  const filteredImages = processedImages.filter(image =>
+    image.prompt.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  // Datos simulados para estadísticas
+  const stats = [
+    { label: 'Imágenes Procesadas', value: '1,234', icon: ImageIcon, change: '+12%' },
+    { label: 'Usuarios Activos', value: '856', icon: Users, change: '+8%' },
+    { label: 'Tiempo Promedio', value: '2.3s', icon: Clock, change: '-15%' },
+    { label: 'Satisfacción', value: '98%', icon: TrendingUp, change: '+3%' },
+  ]
+
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative">
+            <ProgressRing progress={75} size={80} />
+            <Sparkles className="absolute inset-0 m-auto h-8 w-8 text-purple-400 animate-pulse" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mt-6 mb-2">Inicializando Studio Nexora</h2>
+          <p className="text-purple-200">Preparando tu experiencia de IA...</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <Header />
+      
+      <main className="container mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <div className="relative">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                Studio Nexora
+              </span>
+            </h1>
+            <div className="absolute -top-4 -right-4 w-8 h-8">
+              <Sparkles className="w-full h-full text-yellow-400 animate-pulse" />
+            </div>
+          </div>
+          
+          <p className="text-xl md:text-2xl text-purple-200 mb-8 max-w-3xl mx-auto">
+            Transforma tus imágenes con el poder de la inteligencia artificial. 
+            Crea, edita y mejora con tecnología de vanguardia.
+          </p>
+          
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20"
+            >
+              <Zap className="h-5 w-5 text-yellow-400" />
+              <span className="text-white font-medium">Procesamiento Rápido</span>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20"
+            >
+              <Sparkles className="h-5 w-5 text-purple-400" />
+              <span className="text-white font-medium">IA Avanzada</span>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20"
+            >
+              <CheckCircle className="h-5 w-5 text-green-400" />
+              <span className="text-white font-medium">Resultados Garantizados</span>
+            </motion.div>
+          </div>
+        </motion.section>
+
+        {/* Navigation Tabs */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex justify-center mb-8"
+        >
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-2 border border-white/20">
+            {[
+              { id: 'upload', label: 'Subir Imagen', icon: Upload },
+              { id: 'gallery', label: 'Galería', icon: ImageIcon },
+              { id: 'settings', label: 'Configuración', icon: Settings },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                  activeTab === tab.id
+                    ? 'bg-white text-purple-900 shadow-lg'
+                    : 'text-white hover:bg-white/10'
+                }`}
+              >
+                <tab.icon className="h-5 w-5" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Content Sections */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'upload' && (
+            <motion.section
+              key="upload"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-4xl mx-auto"
+            >
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Upload Section */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+                  <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <Upload className="h-6 w-6 text-blue-400" />
+                    Subir Imagen
+                  </h2>
+                  
+                  <ImageUpload
+                    onImageUpload={handleImageUpload}
+                    selectedImage={selectedImage}
+                    ref={fileInputRef}
+                  />
+                  
+                  {selectedImage && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-6"
+                    >
+                      <label className="block text-white font-medium mb-3">
+                        Describe la transformación que deseas:
+                      </label>
+                      <textarea
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                        placeholder="Ej: Convierte esta imagen en un estilo artístico de acuarela con colores vibrantes..."
+                        className="w-full h-32 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-purple-200 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                      
+                      <Button
+                        onClick={handleProcessImage}
+                        disabled={isProcessing || !prompt.trim()}
+                        className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isProcessing ? (
+                          <div className="flex items-center gap-2">
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                            Procesando...
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="h-5 w-5" />
+                            Procesar con IA
+                          </div>
+                        )}
+                      </Button>
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Progress & Preview */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+                  <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <Zap className="h-6 w-6 text-yellow-400" />
+                    Progreso
+                  </h2>
+                  
+                  {isProcessing ? (
+                    <div className="text-center">
+                      <ProgressRing progress={progress} size={40} />
+                      <p className="text-purple-200 mt-4">
+                        Procesando tu imagen con IA...
+                      </p>
+                      <p className="text-sm text-purple-300 mt-2">
+                        {progress < 30 ? 'Analizando imagen...' :
+                         progress < 60 ? 'Aplicando transformaciones...' :
+                         progress < 90 ? 'Optimizando resultado...' :
+                         'Finalizando...'}
+                      </p>
+                    </div>
+                  ) : selectedImage ? (
+                    <div className="text-center">
+                      <img
+                        src={URL.createObjectURL(selectedImage)}
+                        alt="Preview"
+                        className="w-full h-48 object-cover rounded-xl mb-4"
+                      />
+                      <p className="text-purple-200">
+                        Imagen lista para procesar
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <ImageIcon className="h-16 w-16 text-purple-400 mx-auto mb-4 opacity-50" />
+                      <p className="text-purple-200">
+                        Selecciona una imagen para comenzar
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 3D Earth Component */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="mt-12 bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10"
+              >
+                <h3 className="text-2xl font-bold text-white mb-6 text-center">
+                  Conectando con IA Global
+                </h3>
+                <div className="h-96 relative">
+                  <EarthCanvas />
+                </div>
+              </motion.div>
+            </motion.section>
+          )}
+
+          {activeTab === 'gallery' && (
+            <motion.section
+              key="gallery"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-6xl mx-auto"
+            >
+              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                  <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                    <ImageIcon className="h-6 w-6 text-purple-400" />
+                    Galería de Imágenes
+                  </h2>
+                  
+                  <div className="flex gap-4">
+                    <SearchInput
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Buscar por prompt..."
+                      className="w-64"
+                    />
+                    <Button
+                      onClick={() => setIsLoadingGallery(!isLoadingGallery)}
+                      variant="outline"
+                      className="text-white border-white/20 hover:bg-white/10"
+                    >
+                      {isLoadingGallery ? 'Ocultar Loading' : 'Mostrar Loading'}
+                    </Button>
+                  </div>
+                </div>
+
+                {isLoadingGallery ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[...Array(6)].map((_, i) => (
+                      <div key={i} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                        <div className="skeleton h-48 rounded-lg mb-4"></div>
+                        <div className="skeleton h-4 rounded mb-2"></div>
+                        <div className="skeleton h-3 rounded w-3/4"></div>
+                      </div>
+                    ))}
+                  </div>
+                ) : filteredImages.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredImages.map((image) => (
+                      <ProcessedImage
+                        key={image.id}
+                        image={image}
+                        onDelete={() => handleDeleteImage(image.id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <ImageIcon className="h-16 w-16 text-purple-400 mx-auto mb-4 opacity-50" />
+                    <p className="text-purple-200 text-lg">
+                      {searchQuery ? 'No se encontraron imágenes' : 'No hay imágenes procesadas aún'}
+                    </p>
+                    <p className="text-purple-300 text-sm mt-2">
+                      {searchQuery ? 'Intenta con otros términos de búsqueda' : 'Sube y procesa tu primera imagen para verla aquí'}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </motion.section>
+          )}
+
+          {activeTab === 'settings' && (
+            <motion.section
+              key="settings"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-4xl mx-auto"
+            >
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Settings Panel */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+                  <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <Settings className="h-6 w-6 text-blue-400" />
+                    Configuración
+                  </h2>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-white font-medium mb-2">Calidad de Procesamiento</label>
+                      <select className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="high">Alta Calidad (Lento)</option>
+                        <option value="medium">Calidad Media (Balanceado)</option>
+                        <option value="fast">Calidad Rápida (Rápido)</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-white font-medium mb-2">Velocidad de Procesamiento</label>
+                      <div className="flex items-center gap-4">
+                        <span className="text-purple-200">Lento</span>
+                        <input type="range" min="1" max="10" defaultValue="5" className="flex-1" />
+                        <span className="text-purple-200">Rápido</span>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-white font-medium mb-2">Formato de Salida</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {['PNG', 'JPG', 'WEBP'].map((format) => (
+                          <button
+                            key={format}
+                            className="bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg py-2 text-white transition-all duration-200"
+                          >
+                            {format}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-white font-medium">Auto-guardar resultados</span>
+                      <button className="bg-purple-500 hover:bg-purple-600 w-12 h-6 rounded-full relative transition-all duration-200">
+                        <div className="bg-white w-5 h-5 rounded-full absolute top-0.5 right-0.5 transition-all duration-200"></div>
+                      </button>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-white font-medium">Notificaciones push</span>
+                      <button className="bg-gray-600 hover:bg-gray-500 w-12 h-6 rounded-full relative transition-all duration-200">
+                        <div className="bg-white w-5 h-5 rounded-full absolute top-0.5 left-0.5 transition-all duration-200"></div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stats Panel */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                      <Star className="h-6 w-6 text-yellow-400" />
+                      Estadísticas de Procesamiento
+                    </h2>
+                    <Button
+                      onClick={() => setIsLoadingStats(!isLoadingStats)}
+                      variant="outline"
+                      size="sm"
+                      className="text-white border-white/20 hover:bg-white/10"
+                    >
+                      {isLoadingStats ? 'Ocultar Loading' : 'Mostrar Loading'}
+                    </Button>
+                  </div>
+                  
+                  {isLoadingStats ? (
+                    <div className="space-y-6">
+                      {[...Array(4)].map((_, i) => (
+                        <div key={i} className="flex items-center gap-4">
+                          <div className="skeleton w-12 h-12 rounded-lg"></div>
+                          <div className="flex-1">
+                            <div className="skeleton h-4 rounded mb-2"></div>
+                            <div className="skeleton h-6 rounded w-20"></div>
+                          </div>
+                          <div className="skeleton h-4 rounded w-12"></div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      {stats.map((stat, index) => (
+                        <motion.div
+                          key={stat.label}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10"
+                        >
+                          <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 rounded-lg">
+                            <stat.icon className="h-6 w-6 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-purple-200 text-sm">{stat.label}</p>
+                            <p className="text-white text-2xl font-bold">{stat.value}</p>
+                          </div>
+                          <div className={`text-sm font-medium ${
+                            stat.change.startsWith('+') ? 'text-green-400' : 'text-red-400'
+                          }`}>
+                            {stat.change}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.section>
+          )}
+        </AnimatePresence>
+      </main>
+
+      <Footer />
+
+      {/* Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title=""
+      >
+        {modalContent}
+      </Modal>
+    </div>
+  )
+}
+```

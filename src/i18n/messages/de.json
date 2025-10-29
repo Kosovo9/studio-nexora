@@ -1,0 +1,199 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Vorherige",
+    "upload": "Hochladen",
+    "download": "Herunterladen",
+    "share": "Teilen"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "gallery": "Galerie",
+    "pricing": "Preise",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "logout": "Abmelden",
+    "profile": "Profil",
+    "admin": "Verwaltung"
+  },
+  "hero": {
+    "title": "Verwandeln Sie Ihre Fotos mit KI",
+    "subtitle": "Erstellen Sie professionelle Studioporträts mit fortschrittlicher künstlicher Intelligenz",
+    "cta": "Jetzt Starten",
+    "features": {
+      "ai": "Fortschrittliche KI",
+      "fast": "Schnelle Ergebnisse",
+      "quality": "Professionelle Qualität"
+    }
+  },
+  "upload": {
+    "title": "Laden Sie Ihr Foto hoch",
+    "dragDrop": "Ziehen Sie Ihr Bild hierher",
+    "or": "oder",
+    "clickToUpload": "Klicken zum Hochladen",
+    "supportedFormats": "Unterstützte Formate: JPEG, PNG, WebP",
+    "maxSize": "Max. Größe: 10MB",
+    "processing": "Verarbeitung...",
+    "selectType": "Wählen Sie den Fototyp",
+    "soloMe": "Nur Ich",
+    "meAndPet": "Ich + Mein Haustier",
+    "consent": "Ich akzeptiere die Geschäftsbedingungen",
+    "consentRequired": "Sie müssen die Bedingungen akzeptieren, um fortzufahren",
+    "createStudioPhoto": "Studio-Foto erstellen",
+    "errors": {
+      "fileSize": "Die Datei muss kleiner als 10MB sein",
+      "fileType": "Bitte laden Sie ein gültiges Bild hoch (JPEG, PNG oder WebP)",
+      "uploadFailed": "Bild-Upload fehlgeschlagen",
+      "processingFailed": "Bildverarbeitung fehlgeschlagen"
+    }
+  },
+  "pricing": {
+    "title": "Wählen Sie Ihren Plan",
+    "subtitle": "Flexible Pläne für alle Ihre Bedürfnisse",
+    "monthly": "Monatlich",
+    "yearly": "Jährlich",
+    "save": "Sparen",
+    "choosePlan": "Plan Wählen",
+    "popular": "Am Beliebtesten",
+    "basic": {
+      "name": "Basic",
+      "price": "$5",
+      "description": "Perfekt für den persönlichen Gebrauch",
+      "features": [
+        "5 Fotos pro Monat",
+        "Standard-Qualität",
+        "E-Mail-Support",
+        "Persönliche Galerie"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "$15",
+      "description": "Ideal für Profis",
+      "features": [
+        "50 Fotos pro Monat",
+        "Premium-Qualität",
+        "Prioritäts-Support",
+        "Erweiterte Galerie",
+        "Hochauflösende Downloads",
+        "Ohne Wasserzeichen"
+      ]
+    },
+    "vip": {
+      "name": "VIP",
+      "price": "$30",
+      "description": "Für kommerzielle Nutzung",
+      "features": [
+        "Unbegrenzte Fotos",
+        "Maximale Qualität",
+        "24/7 Support",
+        "API-Zugang",
+        "Kommerzielle Lizenz",
+        "Prioritäts-Verarbeitung"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Anmelden",
+      "subtitle": "Zugang zu Ihrem Konto",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "forgotPassword": "Passwort vergessen?",
+      "noAccount": "Kein Konto?",
+      "signupLink": "Hier registrieren",
+      "loginButton": "Anmelden",
+      "magicLink": "Magic Link senden",
+      "googleLogin": "Mit Google fortfahren"
+    },
+    "signup": {
+      "title": "Konto Erstellen",
+      "subtitle": "Treten Sie Studio Nexora bei",
+      "name": "Vollständiger Name",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "hasAccount": "Bereits ein Konto?",
+      "loginLink": "Hier anmelden",
+      "signupButton": "Konto Erstellen",
+      "terms": "Mit der Registrierung akzeptieren Sie unsere",
+      "termsLink": "Geschäftsbedingungen",
+      "privacy": "und",
+      "privacyLink": "Datenschutzrichtlinie"
+    },
+    "reset": {
+      "title": "Passwort Zurücksetzen",
+      "subtitle": "Wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts",
+      "email": "E-Mail",
+      "sendLink": "Link Senden",
+      "backToLogin": "Zurück zur Anmeldung",
+      "checkEmail": "Überprüfen Sie Ihre E-Mail",
+      "emailSent": "Wir haben einen Link zum Zurücksetzen Ihres Passworts gesendet"
+    }
+  },
+  "admin": {
+    "title": "Verwaltungspanel",
+    "dashboard": "Dashboard",
+    "users": "Benutzer",
+    "orders": "Bestellungen",
+    "settings": "Einstellungen",
+    "analytics": "Analysen",
+    "content": "Inhalt",
+    "pricing": "Preise",
+    "features": "Funktionen",
+    "assets": "Assets",
+    "colors": "Farben",
+    "theme": "Theme",
+    "languages": "Sprachen",
+    "logs": "Protokolle",
+    "metrics": "Metriken"
+  },
+  "footer": {
+    "company": "Unternehmen",
+    "about": "Über uns",
+    "careers": "Karriere",
+    "contact": "Kontakt",
+    "legal": "Rechtliches",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzrichtlinie",
+    "refunds": "Rückerstattungsrichtlinie",
+    "intellectual": "Geistiges Eigentum",
+    "aiUsage": "KI-Nutzung",
+    "watermark": "Wasserzeichen-Richtlinie",
+    "limitations": "Einschränkungen",
+    "security": "Sicherheit",
+    "support": "Support",
+    "help": "Hilfe",
+    "faq": "Häufige Fragen",
+    "community": "Gemeinschaft",
+    "copyright": "© 2025 Studio Nexora. Alle Rechte vorbehalten.",
+    "madeWith": "Mit ❤️ für Kreative gemacht"
+  },
+  "errors": {
+    "404": {
+      "title": "Seite nicht gefunden",
+      "description": "Die gesuchte Seite existiert nicht",
+      "backHome": "Zurück zur Startseite"
+    },
+    "500": {
+      "title": "Server-Fehler",
+      "description": "Etwas ist auf unseren Servern schiefgelaufen",
+      "tryAgain": "Erneut versuchen"
+    },
+    "unauthorized": "Nicht autorisiert",
+    "forbidden": "Zugriff verweigert",
+    "rateLimited": "Zu viele Anfragen. Versuchen Sie es später erneut."
+  }
+}

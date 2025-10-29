@@ -1,0 +1,199 @@
+{
+  "common": {
+    "loading": "Indlæser...",
+    "error": "Fejl",
+    "success": "Succes",
+    "cancel": "Annuller",
+    "confirm": "Bekræft",
+    "save": "Gem",
+    "delete": "Slet",
+    "edit": "Rediger",
+    "close": "Luk",
+    "back": "Tilbage",
+    "next": "Næste",
+    "previous": "Forrige",
+    "upload": "Upload",
+    "download": "Download",
+    "share": "Del"
+  },
+  "navigation": {
+    "home": "Hjem",
+    "gallery": "Galleri",
+    "pricing": "Priser",
+    "about": "Om os",
+    "contact": "Kontakt",
+    "login": "Log ind",
+    "signup": "Tilmeld",
+    "logout": "Log ud",
+    "profile": "Profil",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Transformer dine billeder med AI",
+    "subtitle": "Skab professionelle studioportrætter med avanceret kunstig intelligens",
+    "cta": "Kom i gang nu",
+    "features": {
+      "ai": "Avanceret AI",
+      "fast": "Hurtige resultater",
+      "quality": "Professionel kvalitet"
+    }
+  },
+  "upload": {
+    "title": "Upload dit billede",
+    "dragDrop": "Træk dit billede hertil",
+    "or": "eller",
+    "clickToUpload": "Klik for at uploade",
+    "supportedFormats": "Understøttede formater: JPEG, PNG, WebP",
+    "maxSize": "Maks størrelse: 10MB",
+    "processing": "Behandler...",
+    "selectType": "Vælg billedtype",
+    "soloMe": "Kun mig",
+    "meAndPet": "Mig + mit kæledyr",
+    "consent": "Jeg accepterer vilkårene",
+    "consentRequired": "Du skal acceptere vilkårene for at fortsætte",
+    "createStudioPhoto": "Opret studiebillede",
+    "errors": {
+      "fileSize": "Filen skal være mindre end 10MB",
+      "fileType": "Upload et gyldigt billede (JPEG, PNG eller WebP)",
+      "uploadFailed": "Billedupload mislykkedes",
+      "processingFailed": "Billedbehandling mislykkedes"
+    }
+  },
+  "pricing": {
+    "title": "Vælg din plan",
+    "subtitle": "Fleksible planer til alle dine behov",
+    "monthly": "Månedligt",
+    "yearly": "Årligt",
+    "save": "Spar",
+    "choosePlan": "Vælg plan",
+    "popular": "Mest populære",
+    "basic": {
+      "name": "Basic",
+      "price": "$5",
+      "description": "Perfekt til personlig brug",
+      "features": [
+        "5 billeder per måned",
+        "Standard kvalitet",
+        "E-mail support",
+        "Personligt galleri"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "$15",
+      "description": "Ideelt for professionelle",
+      "features": [
+        "50 billeder per måned",
+        "Premium kvalitet",
+        "Prioritetssupport",
+        "Udvidet galleri",
+        "Høj opløsning downloads",
+        "Intet vandmærke"
+      ]
+    },
+    "vip": {
+      "name": "VIP",
+      "price": "$30",
+      "description": "Til kommerciel brug",
+      "features": [
+        "Ubegrænsede billeder",
+        "Maksimal kvalitet",
+        "24/7 support",
+        "API adgang",
+        "Kommerciel licens",
+        "Prioritetsbehandling"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Log ind",
+      "subtitle": "Adgang til din konto",
+      "email": "E-mail",
+      "password": "Adgangskode",
+      "forgotPassword": "Glemt adgangskode?",
+      "noAccount": "Ingen konto?",
+      "signupLink": "Tilmeld dig her",
+      "loginButton": "Log ind",
+      "magicLink": "Send Magic Link",
+      "googleLogin": "Fortsæt med Google"
+    },
+    "signup": {
+      "title": "Opret konto",
+      "subtitle": "Bliv medlem af Studio Nexora",
+      "name": "Fulde navn",
+      "email": "E-mail",
+      "password": "Adgangskode",
+      "confirmPassword": "Bekræft adgangskode",
+      "hasAccount": "Har allerede en konto?",
+      "loginLink": "Log ind her",
+      "signupButton": "Opret konto",
+      "terms": "Ved at tilmelde dig accepterer du vores",
+      "termsLink": "Vilkår",
+      "privacy": "og",
+      "privacyLink": "Privatlivspolitik"
+    },
+    "reset": {
+      "title": "Nulstil adgangskode",
+      "subtitle": "Vi sender dig et link til at nulstille din adgangskode",
+      "email": "E-mail",
+      "sendLink": "Send link",
+      "backToLogin": "Tilbage til login",
+      "checkEmail": "Tjek din e-mail",
+      "emailSent": "Vi har sendt et link til nulstilling af adgangskode"
+    }
+  },
+  "admin": {
+    "title": "Adminpanel",
+    "dashboard": "Dashboard",
+    "users": "Brugere",
+    "orders": "Ordrer",
+    "settings": "Indstillinger",
+    "analytics": "Analyse",
+    "content": "Indhold",
+    "pricing": "Priser",
+    "features": "Funktioner",
+    "assets": "Aktiver",
+    "colors": "Farver",
+    "theme": "Tema",
+    "languages": "Sprog",
+    "logs": "Logs",
+    "metrics": "Målinger"
+  },
+  "footer": {
+    "company": "Virksomhed",
+    "about": "Om os",
+    "careers": "Karrierer",
+    "contact": "Kontakt",
+    "legal": "Juridisk",
+    "terms": "Brugsvilkår",
+    "privacy": "Privatlivspolitik",
+    "refunds": "Refusionspolitik",
+    "intellectual": "Intellektuel ejendom",
+    "aiUsage": "AI-brug",
+    "watermark": "Vandmærkepolitik",
+    "limitations": "Begrænsninger",
+    "security": "Sikkerhed",
+    "support": "Support",
+    "help": "Hjælp",
+    "faq": "Ofte stillede spørgsmål",
+    "community": "Fællesskab",
+    "copyright": "© 2025 Studio Nexora. Alle rettigheder forbeholdes.",
+    "madeWith": "Lavet med ❤️ for kreative"
+  },
+  "errors": {
+    "404": {
+      "title": "Side ikke fundet",
+      "description": "Siden du leder efter findes ikke",
+      "backHome": "Tilbage til hjem"
+    },
+    "500": {
+      "title": "Serverfejl",
+      "description": "Noget gik galt på vores servere",
+      "tryAgain": "Prøv igen"
+    },
+    "unauthorized": "Ikke autoriseret",
+    "forbidden": "Adgang nægtet",
+    "rateLimited": "For mange anmodninger. Prøv igen senere."
+  }
+}

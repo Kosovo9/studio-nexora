@@ -1,0 +1,199 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "confirm": "确认",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "upload": "上传",
+    "download": "下载",
+    "share": "分享"
+  },
+  "navigation": {
+    "home": "首页",
+    "gallery": "作品集",
+    "pricing": "价格方案",
+    "about": "关于我们",
+    "contact": "联系我们",
+    "login": "登录",
+    "signup": "注册",
+    "logout": "退出登录",
+    "profile": "个人资料",
+    "admin": "管理后台"
+  },
+  "hero": {
+    "title": "AI智能照片处理",
+    "subtitle": "运用先进人工智能技术，打造专业级工作室人像照片",
+    "cta": "立即开始",
+    "features": {
+      "ai": "先进AI技术",
+      "fast": "快速处理",
+      "quality": "专业品质"
+    }
+  },
+  "upload": {
+    "title": "上传您的照片",
+    "dragDrop": "将图片拖拽到此处",
+    "or": "或",
+    "clickToUpload": "点击上传",
+    "supportedFormats": "支持格式：JPEG、PNG、WebP",
+    "maxSize": "最大文件：10MB",
+    "processing": "处理中...",
+    "selectType": "选择照片类型",
+    "soloMe": "个人照片",
+    "meAndPet": "我和宠物",
+    "consent": "我同意服务条款和条件",
+    "consentRequired": "您必须接受条款才能继续",
+    "createStudioPhoto": "生成工作室照片",
+    "errors": {
+      "fileSize": "文件大小必须小于10MB",
+      "fileType": "请上传有效的图片格式（JPEG、PNG或WebP）",
+      "uploadFailed": "图片上传失败",
+      "processingFailed": "图片处理失败"
+    }
+  },
+  "pricing": {
+    "title": "选择您的方案",
+    "subtitle": "灵活的价格方案，满足您的所有需求",
+    "monthly": "月付",
+    "yearly": "年付",
+    "save": "节省",
+    "choosePlan": "选择方案",
+    "popular": "最受欢迎",
+    "basic": {
+      "name": "基础版",
+      "price": "¥35",
+      "description": "适合个人使用",
+      "features": [
+        "每月5张照片",
+        "标准画质",
+        "邮件客服",
+        "个人相册"
+      ]
+    },
+    "pro": {
+      "name": "专业版",
+      "price": "¥105",
+      "description": "专业用户的理想选择",
+      "features": [
+        "每月50张照片",
+        "高级画质",
+        "优先客服",
+        "高级相册",
+        "高清下载",
+        "无水印"
+      ]
+    },
+    "vip": {
+      "name": "VIP版",
+      "price": "¥210",
+      "description": "商业用途专享",
+      "features": [
+        "无限制照片",
+        "最高画质",
+        "24/7客服",
+        "API接口",
+        "商业许可",
+        "优先处理"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "登录",
+      "subtitle": "访问您的账户",
+      "email": "邮箱地址",
+      "password": "密码",
+      "forgotPassword": "忘记密码？",
+      "noAccount": "还没有账户？",
+      "signupLink": "立即注册",
+      "loginButton": "登录",
+      "magicLink": "发送魔法链接",
+      "googleLogin": "使用Google登录"
+    },
+    "signup": {
+      "title": "创建账户",
+      "subtitle": "加入Studio Nexora",
+      "name": "姓名",
+      "email": "邮箱地址",
+      "password": "密码",
+      "confirmPassword": "确认密码",
+      "hasAccount": "已有账户？",
+      "loginLink": "立即登录",
+      "signupButton": "创建账户",
+      "terms": "注册即表示您同意我们的",
+      "termsLink": "服务条款",
+      "privacy": "和",
+      "privacyLink": "隐私政策"
+    },
+    "reset": {
+      "title": "重置密码",
+      "subtitle": "我们将向您发送重置密码的链接",
+      "email": "邮箱地址",
+      "sendLink": "发送链接",
+      "backToLogin": "返回登录",
+      "checkEmail": "请查看您的邮箱",
+      "emailSent": "我们已向您发送密码重置链接"
+    }
+  },
+  "admin": {
+    "title": "管理后台",
+    "dashboard": "仪表板",
+    "users": "用户管理",
+    "orders": "订单管理",
+    "settings": "系统设置",
+    "analytics": "数据分析",
+    "content": "内容管理",
+    "pricing": "价格管理",
+    "features": "功能管理",
+    "assets": "资源管理",
+    "colors": "颜色配置",
+    "theme": "主题设置",
+    "languages": "语言设置",
+    "logs": "系统日志",
+    "metrics": "性能指标"
+  },
+  "footer": {
+    "company": "公司",
+    "about": "关于我们",
+    "careers": "招聘信息",
+    "contact": "联系我们",
+    "legal": "法律条款",
+    "terms": "服务条款",
+    "privacy": "隐私政策",
+    "refunds": "退款政策",
+    "intellectual": "知识产权",
+    "aiUsage": "AI使用条款",
+    "watermark": "水印政策",
+    "limitations": "使用限制",
+    "security": "安全保障",
+    "support": "客户支持",
+    "help": "帮助中心",
+    "faq": "常见问题",
+    "community": "用户社区",
+    "copyright": "© 2025 Studio Nexora. 保留所有权利。",
+    "madeWith": "用❤️为创作者打造"
+  },
+  "errors": {
+    "404": {
+      "title": "页面未找到",
+      "description": "您访问的页面不存在",
+      "backHome": "返回首页"
+    },
+    "500": {
+      "title": "服务器错误",
+      "description": "服务器出现问题，请稍后再试",
+      "tryAgain": "重试"
+    },
+    "unauthorized": "未授权访问",
+    "forbidden": "访问被拒绝",
+    "rateLimited": "请求过于频繁，请稍后再试"
+  }
+}

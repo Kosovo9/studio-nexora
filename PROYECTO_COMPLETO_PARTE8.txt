@@ -1,0 +1,811 @@
+PROYECTO STUDIO NEXORA - CONTENIDO COMPLETO (PARTE 8)
+========================================================
+
+[src/hooks]
+(directorio)
+
+[src/hooks/useLocalStorage.ts]
+```
+'use client'
+
+import { useState, useEffect } from 'react'
+
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, (value: T | ((val: T) => T)) => void] {
+  // State to store our value
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === 'undefined') {
+      return initialValue
+    }
+
+    try {
+      const item = window.localStorage.getItem(key)
+      return item ? JSON.parse(item) : initialValue
+    } catch (error) {
+      console.error(`Error reading localStorage key "${key}":`, error)
+      return initialValue
+    }
+  })
+
+  // Return a wrapped version of useState's setter function that persists the new value to localStorage
+  const setValue = (value: T | ((val: T) => T)) => {
+    try {
+      // Allow value to be a function so we have the same API as useState
+      const valueToStore = value instanceof Function ? value(storedValue) : value
+      
+      // Save state
+      setStoredValue(valueToStore)
+      
+      // Save to local storage
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore))
+      }
+    } catch (error) {
+      console.error(`Error setting localStorage key "${key}":`, error)
+    }
+  }
+
+  return [storedValue, setValue]
+}
+```
+
+[src/hooks/useSessionStorage.ts]
+```
+'use client'
+
+import { useState, useEffect } from 'react'
+
+export function useSessionStorage<T>(
+  key: string,
+  initialValue: T
+): [T, (value: T | ((val: T) => T)) => void] {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === 'undefined') {
+      return initialValue
+    }
+
+    try {
+      const item = window.sessionStorage.getItem(key)
+      return item ? JSON.parse(item) : initialValue
+    } catch (error) {
+      console.error(`Error reading sessionStorage key "${key}":`, error)
+      return initialValue
+    }
+  })
+
+  const setValue = (value: T | ((val: T) => T)) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value
+      setStoredValue(valueToStore)
+      
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.setItem(key, JSON.stringify(valueToStore))
+      }
+    } catch (error) {
+      console.error(`Error setting sessionStorage key "${key}":`, error)
+    }
+  }
+
+  return [storedValue, setValue]
+}
+```
+
+[src/hooks/useDebounce.ts]
+```
+'use client'
+
+import { useState, useEffect } from 'react'
+
+export function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value)
+    }, delay)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [value, delay])
+
+  return debouncedValue
+}
+```
+
+[src/hooks/useIntersectionObserver.ts]
+```
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+
+interface UseIntersectionObserverProps {
+  threshold?: number
+  root?: Element | null
+  rootMargin?: string
+  freezeOnceVisible?: boolean
+}
+
+export function useIntersectionObserver({
+  threshold = 0,
+  root = null,
+  rootMargin = '0%',
+  freezeOnceVisible = false,
+}: UseIntersectionObserverProps = {}) {
+  const [entry, setEntry] = useState<IntersectionObserverEntry>()
+  const [isVisible, setIsVisible] = useState(false)
+  const elementRef = useRef<Element>()
+
+  const frozen = entry?.isIntersecting && freezeOnceVisible
+
+  const updateEntry = ([entry]: IntersectionObserverEntry[]) => {
+    setEntry(entry)
+    setIsVisible(entry.isIntersecting)
+  }
+
+  useEffect(() => {
+    const node = elementRef?.current
+    const hasIOSupport = !!window.IntersectionObserver
+
+    if (!hasIOSupport || frozen || !node) return
+
+    const observerParams = { threshold, root, rootMargin }
+    const observer = new IntersectionObserver(updateEntry, observerParams)
+
+    observer.observe(node)
+
+    return () => observer.disconnect()
+  }, [elementRef, threshold, root, rootMargin, frozen])
+
+  return { ref: elementRef, entry, isVisible }
+}
+```
+
+[src/hooks/useImageUpload.ts]
+```
+'use client'
+
+import { useState, useCallback } from 'react'
+import { useToast } from '@/components/ui/Toast'
+import { SUPPORTED_IMAGE_FORMATS, MAX_FILE_SIZE } from '@/lib/constants'
+import { formatBytes } from '@/lib/utils'
+
+interface UploadState {
+  isUploading: boolean
+  progress: number
+  error: string | null
+}
+
+interface UseImageUploadReturn {
+  uploadState: UploadState
+  uploadImage: (file: File) => Promise<string | null>
+  resetUpload: () => void
+}
+
+export function useImageUpload(): UseImageUploadReturn {
+  const [uploadState, setUploadState] = useState<UploadState>({
+    isUploading: false,
+    progress: 0,
+    error: null,
+  })
+  
+  const { error: showError, success: showSuccess } = useToast()
+
+  const validateFile = useCallback((file: File): string | null => {
+    if (!SUPPORTED_IMAGE_FORMATS.includes(file.type as any)) {
+      return 'Formato de archivo no soportado. Por favor, usa JPG, PNG, WebP, GIF, BMP o TIFF.'
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      return `El archivo es demasiado grande. Tamaño máximo: ${formatBytes(MAX_FILE_SIZE)}`
+    }
+
+    return null
+  }, [])
+
+  const uploadImage = useCallback(async (file: File): Promise<string | null> => {
+    const validationError = validateFile(file)
+    if (validationError) {
+      showError(validationError)
+      return null
+    }
+
+    setUploadState({
+      isUploading: true,
+      progress: 0,
+      error: null,
+    })
+
+    try {
+      const formData = new FormData()
+      formData.append('image', file)
+
+      const xhr = new XMLHttpRequest()
+
+      return new Promise((resolve, reject) => {
+        xhr.upload.addEventListener('progress', (event) => {
+          if (event.lengthComputable) {
+            const progress = Math.round((event.loaded / event.total) * 100)
+            setUploadState(prev => ({ ...prev, progress }))
+          }
+        })
+
+        xhr.addEventListener('load', () => {
+          if (xhr.status === 200) {
+            try {
+              const response = JSON.parse(xhr.responseText)
+              if (response.success) {
+                showSuccess('Imagen subida exitosamente')
+                setUploadState({
+                  isUploading: false,
+                  progress: 100,
+                  error: null,
+                })
+                resolve(response.data.url)
+              } else {
+                throw new Error(response.error || 'Error al subir la imagen')
+              }
+            } catch (error) {
+              reject(error)
+            }
+          } else {
+            reject(new Error(`Error HTTP: ${xhr.status}`))
+          }
+        })
+
+        xhr.addEventListener('error', () => {
+          reject(new Error('Error de red al subir la imagen'))
+        })
+
+        xhr.open('POST', '/api/upload')
+        xhr.send(formData)
+      })
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      
+      setUploadState({
+        isUploading: false,
+        progress: 0,
+        error: errorMessage,
+      })
+      
+      showError(errorMessage)
+      return null
+    }
+  }, [validateFile, showError, showSuccess])
+
+  const resetUpload = useCallback(() => {
+    setUploadState({
+      isUploading: false,
+      progress: 0,
+      error: null,
+    })
+  }, [])
+
+  return {
+    uploadState,
+    uploadImage,
+    resetUpload,
+  }
+}
+```
+
+[src/hooks/useImageProcessing.ts]
+```
+'use client'
+
+import { useState, useCallback } from 'react'
+import { useToast } from '@/components/ui/Toast'
+import type { ProcessingType, ProcessingOptions, ProcessingProgress } from '@/lib/types'
+
+interface ProcessingState {
+  isProcessing: boolean
+  progress: ProcessingProgress | null
+  error: string | null
+}
+
+interface UseImageProcessingReturn {
+  processingState: ProcessingState
+  processImage: (imageUrl: string, options: ProcessingOptions) => Promise<string | null>
+  cancelProcessing: () => void
+  resetProcessing: () => void
+}
+
+export function useImageProcessing(): UseImageProcessingReturn {
+  const [processingState, setProcessingState] = useState<ProcessingState>({
+    isProcessing: false,
+    progress: null,
+    error: null,
+  })
+  
+  const [abortController, setAbortController] = useState<AbortController | null>(null)
+  const { error: showError, success: showSuccess, loading: showLoading } = useToast()
+
+  const processImage = useCallback(async (
+    imageUrl: string, 
+    options: ProcessingOptions
+  ): Promise<string | null> => {
+    const controller = new AbortController()
+    setAbortController(controller)
+
+    setProcessingState({
+      isProcessing: true,
+      progress: {
+        stage: 'Iniciando procesamiento...',
+        percentage: 0,
+        estimatedTime: 0,
+        currentOperation: 'Preparando imagen',
+      },
+      error: null,
+    })
+
+    const loadingToastId = showLoading('Procesando imagen...')
+
+    try {
+      const response = await fetch('/api/process', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageUrl,
+          options,
+        }),
+        signal: controller.signal,
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`)
+      }
+
+      const data = await response.json()
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Error al procesar la imagen')
+      }
+
+      // Simulate progress updates
+      const progressStages = [
+        { stage: 'Analizando imagen...', percentage: 20, operation: 'Análisis de contenido' },
+        { stage: 'Aplicando IA...', percentage: 50, operation: 'Procesamiento con IA' },
+        { stage: 'Optimizando resultado...', percentage: 80, operation: 'Optimización final' },
+        { stage: 'Finalizando...', percentage: 100, operation: 'Guardando resultado' },
+      ]
+
+      for (const stage of progressStages) {
+        if (controller.signal.aborted) break
+        
+        setProcessingState(prev => ({
+          ...prev,
+          progress: {
+            stage: stage.stage,
+            percentage: stage.percentage,
+            estimatedTime: Math.max(0, (100 - stage.percentage) * 0.5),
+            currentOperation: stage.operation,
+          },
+        }))
+        
+        await new Promise(resolve => setTimeout(resolve, 1000))
+      }
+
+      setProcessingState({
+        isProcessing: false,
+        progress: null,
+        error: null,
+      })
+
+      showSuccess('Imagen procesada exitosamente')
+      return data.data.processedUrl
+
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        setProcessingState({
+          isProcessing: false,
+          progress: null,
+          error: 'Procesamiento cancelado',
+        })
+        return null
+      }
+
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      
+      setProcessingState({
+        isProcessing: false,
+        progress: null,
+        error: errorMessage,
+      })
+      
+      showError(errorMessage)
+      return null
+    } finally {
+      setAbortController(null)
+    }
+  }, [showError, showSuccess, showLoading])
+
+  const cancelProcessing = useCallback(() => {
+    if (abortController) {
+      abortController.abort()
+      setAbortController(null)
+    }
+  }, [abortController])
+
+  const resetProcessing = useCallback(() => {
+    setProcessingState({
+      isProcessing: false,
+      progress: null,
+      error: null,
+    })
+  }, [])
+
+  return {
+    processingState,
+    processImage,
+    cancelProcessing,
+    resetProcessing,
+  }
+}
+```
+
+[src/hooks/useKeyboardShortcuts.ts]
+```
+'use client'
+
+import { useEffect } from 'react'
+
+interface KeyboardShortcut {
+  key: string
+  ctrlKey?: boolean
+  shiftKey?: boolean
+  altKey?: boolean
+  metaKey?: boolean
+  callback: (event: KeyboardEvent) => void
+  preventDefault?: boolean
+}
+
+export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      for (const shortcut of shortcuts) {
+        const {
+          key,
+          ctrlKey = false,
+          shiftKey = false,
+          altKey = false,
+          metaKey = false,
+          callback,
+          preventDefault = true,
+        } = shortcut
+
+        const keyMatches = event.key.toLowerCase() === key.toLowerCase()
+        const ctrlMatches = event.ctrlKey === ctrlKey
+        const shiftMatches = event.shiftKey === shiftKey
+        const altMatches = event.altKey === altKey
+        const metaMatches = event.metaKey === metaKey
+
+        if (keyMatches && ctrlMatches && shiftMatches && altMatches && metaMatches) {
+          if (preventDefault) {
+            event.preventDefault()
+          }
+          callback(event)
+          break
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [shortcuts])
+}
+```
+
+[src/store]
+(directorio)
+
+[src/store/useStore.ts]
+```
+'use client'
+
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import type { ProcessedImage, Settings, User, Stats } from '@/lib/types'
+
+interface AppState {
+  // User state
+  user: User | null
+  isAuthenticated: boolean
+  
+  // Images state
+  processedImages: ProcessedImage[]
+  currentImage: ProcessedImage | null
+  
+  // UI state
+  isLoading: boolean
+  sidebarOpen: boolean
+  theme: 'light' | 'dark' | 'system'
+  
+  // Settings
+  settings: Settings
+  
+  // Stats
+  stats: Stats | null
+  
+  // Actions
+  setUser: (user: User | null) => void
+  setAuthenticated: (authenticated: boolean) => void
+  addProcessedImage: (image: ProcessedImage) => void
+  updateProcessedImage: (id: string, updates: Partial<ProcessedImage>) => void
+  removeProcessedImage: (id: string) => void
+  setCurrentImage: (image: ProcessedImage | null) => void
+  setLoading: (loading: boolean) => void
+  setSidebarOpen: (open: boolean) => void
+  setTheme: (theme: 'light' | 'dark' | 'system') => void
+  updateSettings: (settings: Partial<Settings>) => void
+  setStats: (stats: Stats) => void
+  clearStore: () => void
+}
+
+const defaultSettings: Settings = {
+  theme: 'dark',
+  language: 'es',
+  autoSave: true,
+  notifications: {
+    email: true,
+    push: true,
+    processing: true,
+    marketing: false,
+  },
+  privacy: {
+    analytics: true,
+    cookies: true,
+  },
+  processing: {
+    defaultQuality: 'medium',
+    autoEnhance: false,
+    preserveMetadata: true,
+  },
+}
+
+export const useStore = create<AppState>()(
+  persist(
+    (set, get) => ({
+      // Initial state
+      user: null,
+      isAuthenticated: false,
+      processedImages: [],
+      currentImage: null,
+      isLoading: false,
+      sidebarOpen: false,
+      theme: 'dark',
+      settings: defaultSettings,
+      stats: null,
+
+      // Actions
+      setUser: (user) => set({ user, isAuthenticated: !!user }),
+      
+      setAuthenticated: (authenticated) => set({ isAuthenticated: authenticated }),
+      
+      addProcessedImage: (image) =>
+        set((state) => ({
+          processedImages: [image, ...state.processedImages],
+        })),
+      
+      updateProcessedImage: (id, updates) =>
+        set((state) => ({
+          processedImages: state.processedImages.map((img) =>
+            img.id === id ? { ...img, ...updates } : img
+          ),
+          currentImage:
+            state.currentImage?.id === id
+              ? { ...state.currentImage, ...updates }
+              : state.currentImage,
+        })),
+      
+      removeProcessedImage: (id) =>
+        set((state) => ({
+          processedImages: state.processedImages.filter((img) => img.id !== id),
+          currentImage: state.currentImage?.id === id ? null : state.currentImage,
+        })),
+      
+      setCurrentImage: (image) => set({ currentImage: image }),
+      
+      setLoading: (loading) => set({ isLoading: loading }),
+      
+      setSidebarOpen: (open) => set({ sidebarOpen: open }),
+      
+      setTheme: (theme) => set({ theme }),
+      
+      updateSettings: (newSettings) =>
+        set((state) => ({
+          settings: { ...state.settings, ...newSettings },
+        })),
+      
+      setStats: (stats) => set({ stats }),
+      
+      clearStore: () =>
+        set({
+          user: null,
+          isAuthenticated: false,
+          processedImages: [],
+          currentImage: null,
+          isLoading: false,
+          stats: null,
+        }),
+    }),
+    {
+      name: 'nexora-store',
+      partialize: (state) => ({
+        theme: state.theme,
+        settings: state.settings,
+        sidebarOpen: state.sidebarOpen,
+      }),
+    }
+  )
+)
+```
+
+[src/store/useImageStore.ts]
+```
+'use client'
+
+import { create } from 'zustand'
+import type { ProcessedImage, ProcessingType } from '@/lib/types'
+
+interface ImageState {
+  images: ProcessedImage[]
+  selectedImages: string[]
+  filters: {
+    type: ProcessingType | 'all'
+    status: 'all' | 'completed' | 'processing' | 'failed'
+    dateRange: 'all' | 'today' | 'week' | 'month'
+  }
+  sortBy: 'date' | 'name' | 'size' | 'type'
+  sortOrder: 'asc' | 'desc'
+  searchQuery: string
+  
+  // Actions
+  setImages: (images: ProcessedImage[]) => void
+  addImage: (image: ProcessedImage) => void
+  updateImage: (id: string, updates: Partial<ProcessedImage>) => void
+  removeImage: (id: string) => void
+  toggleImageSelection: (id: string) => void
+  selectAllImages: () => void
+  clearSelection: () => void
+  setFilters: (filters: Partial<ImageState['filters']>) => void
+  setSortBy: (sortBy: ImageState['sortBy']) => void
+  setSortOrder: (sortOrder: ImageState['sortOrder']) => void
+  setSearchQuery: (query: string) => void
+  getFilteredImages: () => ProcessedImage[]
+}
+
+export const useImageStore = create<ImageState>((set, get) => ({
+  images: [],
+  selectedImages: [],
+  filters: {
+    type: 'all',
+    status: 'all',
+    dateRange: 'all',
+  },
+  sortBy: 'date',
+  sortOrder: 'desc',
+  searchQuery: '',
+
+  setImages: (images) => set({ images }),
+  
+  addImage: (image) =>
+    set((state) => ({ images: [image, ...state.images] })),
+  
+  updateImage: (id, updates) =>
+    set((state) => ({
+      images: state.images.map((img) =>
+        img.id === id ? { ...img, ...updates } : img
+      ),
+    })),
+  
+  removeImage: (id) =>
+    set((state) => ({
+      images: state.images.filter((img) => img.id !== id),
+      selectedImages: state.selectedImages.filter((imgId) => imgId !== id),
+    })),
+  
+  toggleImageSelection: (id) =>
+    set((state) => ({
+      selectedImages: state.selectedImages.includes(id)
+        ? state.selectedImages.filter((imgId) => imgId !== id)
+        : [...state.selectedImages, id],
+    })),
+  
+  selectAllImages: () =>
+    set((state) => ({
+      selectedImages: state.images.map((img) => img.id),
+    })),
+  
+  clearSelection: () => set({ selectedImages: [] }),
+  
+  setFilters: (filters) =>
+    set((state) => ({ filters: { ...state.filters, ...filters } })),
+  
+  setSortBy: (sortBy) => set({ sortBy }),
+  
+  setSortOrder: (sortOrder) => set({ sortOrder }),
+  
+  setSearchQuery: (searchQuery) => set({ searchQuery }),
+  
+  getFilteredImages: () => {
+    const { images, filters, sortBy, sortOrder, searchQuery } = get()
+    
+    let filtered = [...images]
+    
+    // Apply filters
+    if (filters.type !== 'all') {
+      filtered = filtered.filter((img) => img.processingType === filters.type)
+    }
+    
+    if (filters.status !== 'all') {
+      filtered = filtered.filter((img) => img.status === filters.status)
+    }
+    
+    if (filters.dateRange !== 'all') {
+      const now = new Date()
+      const filterDate = new Date()
+      
+      switch (filters.dateRange) {
+        case 'today':
+          filterDate.setHours(0, 0, 0, 0)
+          break
+        case 'week':
+          filterDate.setDate(now.getDate() - 7)
+          break
+        case 'month':
+          filterDate.setMonth(now.getMonth() - 1)
+          break
+      }
+      
+      filtered = filtered.filter((img) => new Date(img.createdAt) >= filterDate)
+    }
+    
+    // Apply search
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.filter((img) =>
+        img.filename.toLowerCase().includes(query) ||
+        img.processingType.toLowerCase().includes(query)
+      )
+    }
+    
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let aValue: any
+      let bValue: any
+      
+      switch (sortBy) {
+        case 'date':
+          aValue = new Date(a.createdAt).getTime()
+          bValue = new Date(b.createdAt).getTime()
+          break
+        case 'name':
+          aValue = a.filename.toLowerCase()
+          bValue = b.filename.toLowerCase()
+          break
+        case 'size':
+          aValue = a.originalSize
+          bValue = b.originalSize
+          break
+        case 'type':
+          aValue = a.processingType
+          bValue = b.processingType
+          break
+        default:
+          return 0
+      }
+      
+      if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1
+      if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1
+      return 0
+    })
+    
+    return filtered
+  },
+}))
+```

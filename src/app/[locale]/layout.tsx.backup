@@ -1,0 +1,109 @@
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
+import { LanguageSelector } from '@/components/LanguageSelector'
+import { locales } from '@/i18n/config'
+import '../globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Studio Nexora - Fotografía de estudio hiperrealista con IA',
+  description: 'Sube tu foto y elige tu estilo. Fotografía de estudio profesional con inteligencia artificial.',
+  keywords: 'fotografía, IA, estudio, hiperrealista, retrato, profesional',
+  authors: [{ name: 'Studio Nexora' }],
+  creator: 'Studio Nexora',
+  publisher: 'Studio Nexora',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://studio-nexora.vercel.app'),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'es': '/es',
+      'en': '/en',
+      'pt': '/pt',
+      'fr': '/fr',
+      'de': '/de',
+      'it': '/it',
+      'ja': '/ja',
+      'ko': '/ko',
+      'zh': '/zh',
+      'ar': '/ar',
+      'hi': '/hi',
+      'ru': '/ru',
+    },
+  },
+  openGraph: {
+    title: 'Studio Nexora - Fotografía de estudio hiperrealista con IA',
+    description: 'Sube tu foto y elige tu estilo. Fotografía de estudio profesional con inteligencia artificial.',
+    url: 'https://studio-nexora.vercel.app',
+    siteName: 'Studio Nexora',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Studio Nexora - Fotografía de estudio hiperrealista con IA',
+      },
+    ],
+    locale: 'es_ES',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Studio Nexora - Fotografía de estudio hiperrealista con IA',
+    description: 'Sube tu foto y elige tu estilo. Fotografía de estudio profesional con inteligencia artificial.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
+}
+
+interface RootLayoutProps {
+  children: React.ReactNode
+  params: { locale: string }
+}
+
+export default async function RootLayout({
+  children,
+  params,
+}: RootLayoutProps) {
+  const messages = await getMessages()
+  
+  return (
+    <html lang={params.locale}>
+      <body className={inter.className}>
+        <NextIntlClientProvider locale={params.locale} messages={messages}>
+          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+            <header className="p-4">
+              <LanguageSelector currentLocale={params.locale} />
+            </header>
+            {children}
+          </div>
+        </NextIntlClientProvider>
+        <Analytics />
+        <SpeedInsights />
+      </body>
+    </html>
+  )
+}

@@ -1,0 +1,199 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Salvar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "close": "Fechar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "upload": "Enviar",
+    "download": "Baixar",
+    "share": "Compartilhar"
+  },
+  "navigation": {
+    "home": "Início",
+    "gallery": "Galeria",
+    "pricing": "Preços",
+    "about": "Sobre",
+    "contact": "Contato",
+    "login": "Entrar",
+    "signup": "Cadastrar",
+    "logout": "Sair",
+    "profile": "Perfil",
+    "admin": "Administração"
+  },
+  "hero": {
+    "title": "Transforme suas Fotos com IA",
+    "subtitle": "Crie retratos profissionais de estúdio com inteligência artificial avançada",
+    "cta": "Começar Agora",
+    "features": {
+      "ai": "IA Avançada",
+      "fast": "Resultados Rápidos",
+      "quality": "Qualidade Profissional"
+    }
+  },
+  "upload": {
+    "title": "Envie sua Foto",
+    "dragDrop": "Arraste e solte sua imagem aqui",
+    "or": "ou",
+    "clickToUpload": "Clique para enviar",
+    "supportedFormats": "Formatos suportados: JPEG, PNG, WebP",
+    "maxSize": "Tamanho máximo: 10MB",
+    "processing": "Processando...",
+    "selectType": "Selecione o tipo de foto",
+    "soloMe": "Só Eu",
+    "meAndPet": "Eu + Meu Pet",
+    "consent": "Aceito os termos e condições",
+    "consentRequired": "Você deve aceitar os termos para continuar",
+    "createStudioPhoto": "Criar Foto de Estúdio",
+    "errors": {
+      "fileSize": "O arquivo deve ter menos de 10MB",
+      "fileType": "Por favor envie uma imagem válida (JPEG, PNG ou WebP)",
+      "uploadFailed": "Falha ao enviar imagem",
+      "processingFailed": "Falha ao processar imagem"
+    }
+  },
+  "pricing": {
+    "title": "Escolha seu Plano",
+    "subtitle": "Planos flexíveis para todas as suas necessidades",
+    "monthly": "Mensal",
+    "yearly": "Anual",
+    "save": "Economize",
+    "choosePlan": "Escolher Plano",
+    "popular": "Mais Popular",
+    "basic": {
+      "name": "Básico",
+      "price": "$5",
+      "description": "Perfeito para uso pessoal",
+      "features": [
+        "5 fotos por mês",
+        "Qualidade padrão",
+        "Suporte por email",
+        "Galeria pessoal"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "$15",
+      "description": "Ideal para profissionais",
+      "features": [
+        "50 fotos por mês",
+        "Qualidade premium",
+        "Suporte prioritário",
+        "Galeria avançada",
+        "Downloads em alta resolução",
+        "Sem marca d'água"
+      ]
+    },
+    "vip": {
+      "name": "VIP",
+      "price": "$30",
+      "description": "Para uso comercial",
+      "features": [
+        "Fotos ilimitadas",
+        "Máxima qualidade",
+        "Suporte 24/7",
+        "Acesso à API",
+        "Licença comercial",
+        "Processamento prioritário"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "subtitle": "Acesse sua conta",
+      "email": "Email",
+      "password": "Senha",
+      "forgotPassword": "Esqueceu sua senha?",
+      "noAccount": "Não tem conta?",
+      "signupLink": "Cadastre-se aqui",
+      "loginButton": "Entrar",
+      "magicLink": "Enviar link mágico",
+      "googleLogin": "Continuar com Google"
+    },
+    "signup": {
+      "title": "Criar Conta",
+      "subtitle": "Junte-se ao Studio Nexora",
+      "name": "Nome completo",
+      "email": "Email",
+      "password": "Senha",
+      "confirmPassword": "Confirmar senha",
+      "hasAccount": "Já tem conta?",
+      "loginLink": "Entre aqui",
+      "signupButton": "Criar Conta",
+      "terms": "Ao se cadastrar, você aceita nossos",
+      "termsLink": "Termos e Condições",
+      "privacy": "e",
+      "privacyLink": "Política de Privacidade"
+    },
+    "reset": {
+      "title": "Redefinir Senha",
+      "subtitle": "Enviaremos um link para redefinir sua senha",
+      "email": "Email",
+      "sendLink": "Enviar Link",
+      "backToLogin": "Voltar ao login",
+      "checkEmail": "Verifique seu email",
+      "emailSent": "Enviamos um link para redefinir sua senha"
+    }
+  },
+  "admin": {
+    "title": "Painel de Administração",
+    "dashboard": "Dashboard",
+    "users": "Usuários",
+    "orders": "Pedidos",
+    "settings": "Configurações",
+    "analytics": "Análises",
+    "content": "Conteúdo",
+    "pricing": "Preços",
+    "features": "Recursos",
+    "assets": "Ativos",
+    "colors": "Cores",
+    "theme": "Tema",
+    "languages": "Idiomas",
+    "logs": "Registros",
+    "metrics": "Métricas"
+  },
+  "footer": {
+    "company": "Empresa",
+    "about": "Sobre",
+    "careers": "Carreiras",
+    "contact": "Contato",
+    "legal": "Legal",
+    "terms": "Termos de Serviço",
+    "privacy": "Política de Privacidade",
+    "refunds": "Política de Reembolso",
+    "intellectual": "Propriedade Intelectual",
+    "aiUsage": "Uso de IA",
+    "watermark": "Política de Marca d'Água",
+    "limitations": "Limitações",
+    "security": "Segurança",
+    "support": "Suporte",
+    "help": "Ajuda",
+    "faq": "Perguntas Frequentes",
+    "community": "Comunidade",
+    "copyright": "© 2025 Studio Nexora. Todos os direitos reservados.",
+    "madeWith": "Feito com ❤️ para criadores"
+  },
+  "errors": {
+    "404": {
+      "title": "Página não encontrada",
+      "description": "A página que você procura não existe",
+      "backHome": "Voltar ao início"
+    },
+    "500": {
+      "title": "Erro do servidor",
+      "description": "Algo deu errado em nossos servidores",
+      "tryAgain": "Tentar novamente"
+    },
+    "unauthorized": "Não autorizado",
+    "forbidden": "Acesso negado",
+    "rateLimited": "Muitas solicitações. Tente novamente mais tarde."
+  }
+}

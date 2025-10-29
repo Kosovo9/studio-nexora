@@ -1,10 +1,8 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import createMiddleware from "next-intl/middleware";
 
-export function middleware(_req: NextRequest) {
-  return NextResponse.next();
-}
+export default createMiddleware({
+  locales: ["es","en","pt","fr","it","de","nl","sv","no","da","ja","ko"],
+  defaultLocale: "es"
+});
 
-export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)"],
-};
+export const config = {matcher: ["/((?!_next|.*\\..*).*)"]};

@@ -1,0 +1,199 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "error": "Fout",
+    "success": "Succes",
+    "cancel": "Annuleren",
+    "confirm": "Bevestigen",
+    "save": "Opslaan",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "close": "Sluiten",
+    "back": "Terug",
+    "next": "Volgende",
+    "previous": "Vorige",
+    "upload": "Uploaden",
+    "download": "Downloaden",
+    "share": "Delen"
+  },
+  "navigation": {
+    "home": "Home",
+    "gallery": "Galerij",
+    "pricing": "Prijzen",
+    "about": "Over ons",
+    "contact": "Contact",
+    "login": "Inloggen",
+    "signup": "Registreren",
+    "logout": "Uitloggen",
+    "profile": "Profiel",
+    "admin": "Beheer"
+  },
+  "hero": {
+    "title": "Transformeer je foto's met AI",
+    "subtitle": "Creëer professionele studioportretten met geavanceerde kunstmatige intelligentie",
+    "cta": "Nu Beginnen",
+    "features": {
+      "ai": "Geavanceerde AI",
+      "fast": "Snelle resultaten",
+      "quality": "Professionele kwaliteit"
+    }
+  },
+  "upload": {
+    "title": "Upload je foto",
+    "dragDrop": "Sleep je afbeelding hierheen",
+    "or": "of",
+    "clickToUpload": "Klik om te uploaden",
+    "supportedFormats": "Ondersteunde formaten: JPEG, PNG, WebP",
+    "maxSize": "Max. grootte: 10MB",
+    "processing": "Verwerken...",
+    "selectType": "Selecteer fototype",
+    "soloMe": "Alleen Ik",
+    "meAndPet": "Ik + Mijn Huisdier",
+    "consent": "Ik accepteer de voorwaarden",
+    "consentRequired": "Je moet de voorwaarden accepteren om door te gaan",
+    "createStudioPhoto": "Studio Foto Maken",
+    "errors": {
+      "fileSize": "Bestand moet kleiner zijn dan 10MB",
+      "fileType": "Upload een geldige afbeelding (JPEG, PNG of WebP)",
+      "uploadFailed": "Afbeelding upload mislukt",
+      "processingFailed": "Afbeelding verwerking mislukt"
+    }
+  },
+  "pricing": {
+    "title": "Kies je plan",
+    "subtitle": "Flexibele plannen voor al je behoeften",
+    "monthly": "Maandelijks",
+    "yearly": "Jaarlijks",
+    "save": "Bespaar",
+    "choosePlan": "Kies Plan",
+    "popular": "Populairst",
+    "basic": {
+      "name": "Basic",
+      "price": "$5",
+      "description": "Perfect voor persoonlijk gebruik",
+      "features": [
+        "5 foto's per maand",
+        "Standaard kwaliteit",
+        "E-mail ondersteuning",
+        "Persoonlijke galerij"
+      ]
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "$15",
+      "description": "Ideaal voor professionals",
+      "features": [
+        "50 foto's per maand",
+        "Premium kwaliteit",
+        "Prioriteit ondersteuning",
+        "Uitgebreide galerij",
+        "Hoge resolutie downloads",
+        "Geen watermerk"
+      ]
+    },
+    "vip": {
+      "name": "VIP",
+      "price": "$30",
+      "description": "Voor commercieel gebruik",
+      "features": [
+        "Onbeperkte foto's",
+        "Maximale kwaliteit",
+        "24/7 ondersteuning",
+        "API toegang",
+        "Commerciële licentie",
+        "Prioriteit verwerking"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Inloggen",
+      "subtitle": "Toegang tot je account",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "forgotPassword": "Wachtwoord vergeten?",
+      "noAccount": "Geen account?",
+      "signupLink": "Hier registreren",
+      "loginButton": "Inloggen",
+      "magicLink": "Magic Link versturen",
+      "googleLogin": "Doorgaan met Google"
+    },
+    "signup": {
+      "title": "Account Aanmaken",
+      "subtitle": "Word lid van Studio Nexora",
+      "name": "Volledige naam",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "confirmPassword": "Bevestig wachtwoord",
+      "hasAccount": "Al een account?",
+      "loginLink": "Hier inloggen",
+      "signupButton": "Account Aanmaken",
+      "terms": "Door te registreren accepteer je onze",
+      "termsLink": "Voorwaarden",
+      "privacy": "en",
+      "privacyLink": "Privacybeleid"
+    },
+    "reset": {
+      "title": "Wachtwoord Resetten",
+      "subtitle": "We sturen je een link om je wachtwoord te resetten",
+      "email": "E-mail",
+      "sendLink": "Link Versturen",
+      "backToLogin": "Terug naar inloggen",
+      "checkEmail": "Controleer je e-mail",
+      "emailSent": "We hebben een wachtwoord reset link verstuurd"
+    }
+  },
+  "admin": {
+    "title": "Beheerpaneel",
+    "dashboard": "Dashboard",
+    "users": "Gebruikers",
+    "orders": "Bestellingen",
+    "settings": "Instellingen",
+    "analytics": "Analytics",
+    "content": "Inhoud",
+    "pricing": "Prijzen",
+    "features": "Functies",
+    "assets": "Assets",
+    "colors": "Kleuren",
+    "theme": "Thema",
+    "languages": "Talen",
+    "logs": "Logs",
+    "metrics": "Metrics"
+  },
+  "footer": {
+    "company": "Bedrijf",
+    "about": "Over ons",
+    "careers": "Carrières",
+    "contact": "Contact",
+    "legal": "Juridisch",
+    "terms": "Gebruiksvoorwaarden",
+    "privacy": "Privacybeleid",
+    "refunds": "Terugbetalingsbeleid",
+    "intellectual": "Intellectueel eigendom",
+    "aiUsage": "AI gebruik",
+    "watermark": "Watermerk beleid",
+    "limitations": "Beperkingen",
+    "security": "Beveiliging",
+    "support": "Ondersteuning",
+    "help": "Hulp",
+    "faq": "Veelgestelde vragen",
+    "community": "Gemeenschap",
+    "copyright": "© 2025 Studio Nexora. Alle rechten voorbehouden.",
+    "madeWith": "Gemaakt met ❤️ voor creatievelingen"
+  },
+  "errors": {
+    "404": {
+      "title": "Pagina niet gevonden",
+      "description": "De pagina die je zoekt bestaat niet",
+      "backHome": "Terug naar home"
+    },
+    "500": {
+      "title": "Server fout",
+      "description": "Er ging iets mis op onze servers",
+      "tryAgain": "Probeer opnieuw"
+    },
+    "unauthorized": "Niet geautoriseerd",
+    "forbidden": "Toegang geweigerd",
+    "rateLimited": "Te veel verzoeken. Probeer later opnieuw."
+  }
+}

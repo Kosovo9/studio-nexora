@@ -1,423 +1,132 @@
-# 🎨 Studio Nexora - AI Professional Photography Platform
+# Nexora Studio - SAFE-SHIP Mode 🚀
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+Professional AI-powered photo enhancement platform with comprehensive internationalization, authentication, and payment processing.
 
-Transform your photos into professional studio portraits with AI. Hyperrealistic backgrounds, face enhancement, and more - all powered by cutting-edge AI technology.
+## 🌟 SAFE-SHIP Features
 
-## ✨ Features
-
-### 🎯 Core Features
-- **AI-Powered Image Processing** - Professional studio backgrounds generated with Replicate AI
-- **Multiple Image Types** - Support for solo portraits and person + pet photos
-- **Real-time Processing** - Live progress tracking with visual feedback
-- **Multi-language Support** - 10 languages (EN, ES, PT, FR, DE, IT, JA, KO, ZH, AR)
-- **Drag & Drop Upload** - Intuitive file upload with validation
-- **Image Gallery** - View and download all processed images
-- **Responsive Design** - Optimized for all devices (mobile, tablet, desktop)
-
-### 💳 Payment & Subscriptions
-- **Stripe Integration** - Secure payment processing
-- **Multiple Plans** - Basic ($5), Pro ($15), VIP ($30)
-- **Subscription Management** - Recurring billing with Stripe
-- **Payment History** - Track all transactions
-
-### 🔒 Security & Performance
-- **Rate Limiting** - Prevent abuse with intelligent rate limiting
-- **Input Validation** - Zod schema validation for all inputs
-- **CSRF Protection** - Secure against cross-site attacks
-- **Image Optimization** - Sharp for image processing and optimization
-- **Watermark Protection** - Invisible watermarks for legal protection
-- **CDN Ready** - Optimized for content delivery networks
-
-### 📊 Analytics & Monitoring
-- **Event Tracking** - Comprehensive analytics with Prisma
-- **Error Logging** - Detailed error tracking and reporting
-- **Performance Metrics** - Processing time and success rates
-- **User Analytics** - Track user behavior and engagement
-
-### 🎨 UI/UX Excellence
-- **Framer Motion Animations** - Smooth, professional animations
-- **Glass Morphism Design** - Modern, elegant UI
-- **Dark Mode** - Eye-friendly dark theme
-- **Accessibility** - WCAG 2.1 AA compliant
-- **Toast Notifications** - Real-time user feedback
-- **Loading States** - Skeleton screens and progress indicators
+- ✅ **12 Language Support**: es, en, pt, fr, it, de, nl, sv, no, da, ja, ko
+- ✅ **NextAuth Integration**: Email magic links + Google OAuth
+- ✅ **Stripe Payments**: 3 subscription tiers with secure webhooks
+- ✅ **Admin Dashboard**: Complete content and system management
+- ✅ **Image Processing**: AI-powered with watermarks and job queue
+- ✅ **Rate Limiting**: API protection and abuse prevention
+- ✅ **Comprehensive Testing**: Playwright + Lighthouse CI
+- ✅ **Security Headers**: HSTS, CSP, and more via Vercel
+- ✅ **Legal Compliance**: Terms, Privacy, GDPR-ready
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ and npm 9+
+- Node.js 20+ (LTS)
+- pnpm 8+
 - PostgreSQL database
-- Replicate API account
-- Stripe account (for payments)
+- Redis instance
+- Stripe account (test mode)
+- Vercel account
 
-### Installation
+### Environment Setup
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/yourusername/studio-nexora.git
-cd studio-nexora
-```
-
-2. **Install dependencies**
-```bash
-npm install
-```
-
-3. **Set up environment variables**
+1. Copy environment template:
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your credentials:
+2. Configure required variables:
 ```env
+# Authentication
+NEXTAUTH_SECRET=your-secret-here
+NEXTAUTH_URL=http://localhost:3000
+ADMIN_EMAIL=admin@yourdomain.com
+
 # Database
-DATABASE_URL="postgresql://user:password@localhost:5432/studio_nexora"
+DATABASE_URL=postgresql://user:pass@localhost:5432/nexora
 
-# NextAuth
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-secret-key"
+# Stripe (Test Mode)
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+PRICE_BASIC_ID=price_...
+PRICE_PRO_ID=price_...
+PRICE_VIP_ID=price_...
 
-# Replicate AI
-REPLICATE_API_TOKEN="your-replicate-token"
+# Storage (R2/S3)
+STORAGE_BUCKET=your-bucket
+STORAGE_ENDPOINT=https://your-endpoint
+STORAGE_KEY=your-access-key
+STORAGE_SECRET=your-secret-key
 
-# Stripe
-STRIPE_SECRET_KEY="sk_test_..."
-STRIPE_PUBLISHABLE_KEY="pk_test_..."
-STRIPE_WEBHOOK_SECRET="whsec_..."
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=your-password
 ```
 
-4. **Set up the database**
-```bash
-npm run db:push
-```
-
-5. **Run the development server**
-```bash
-npm run dev
-```
-
-6. **Open your browser**
-Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 📁 Project Structure
-
-```
-studio-nexora/
-├── src/
-│   ├── app/
-│   │   ├── api/
-│   │   │   ├── upload/          # File upload endpoint
-│   │   │   ├── studio/          # AI processing endpoint
-│   │   │   ├── payment/         # Payment processing
-│   │   │   └── webhook/         # Stripe webhooks
-│   │   ├── globals.css          # Global styles
-│   │   ├── layout.tsx           # Root layout
-│   │   └── page.tsx             # Main page (100x optimized)
-│   ├── components/              # Reusable components
-│   ├── lib/
-│   │   ├── prisma.ts           # Database client
-│   │   ├── replicate.ts        # AI processing
-│   │   ├── stripe.ts           # Payment processing
-│   │   ├── store.ts            # State management (Zustand)
-│   │   ├── translations.ts     # i18n translations
-│   │   ├── utils.ts            # Utility functions
-│   │   └── validations.ts      # Zod schemas
-│   └── types/
-│       └── index.ts            # TypeScript types
-├── prisma/
-│   └── schema.prisma           # Database schema
-├── public/
-│   └── uploads/                # Uploaded images
-├── .env.example                # Environment template
-├── next.config.js              # Next.js config
-├── tailwind.config.ts          # Tailwind config
-├── tsconfig.json               # TypeScript config
-└── package.json                # Dependencies
-```
-
-## 🛠️ Technology Stack
-
-### Frontend
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Utility-first CSS framework
-- **Framer Motion** - Animation library
-- **React Dropzone** - File upload component
-- **React Hot Toast** - Toast notifications
-- **Zustand** - State management
-- **Lucide React** - Icon library
-
-### Backend
-- **Next.js API Routes** - Serverless API endpoints
-- **Prisma** - Type-safe ORM
-- **PostgreSQL** - Relational database
-- **Sharp** - Image processing
-- **Zod** - Schema validation
-
-### AI & Processing
-- **Replicate** - AI model hosting
-- **Stability AI SDXL** - Image generation
-- **GFPGAN** - Face enhancement
-- **Real-ESRGAN** - Image upscaling
-- **Rembg** - Background removal
-
-### Payment & Auth
-- **Stripe** - Payment processing
-- **NextAuth.js** - Authentication (optional)
-
-### Analytics & Monitoring
-- **Vercel Analytics** - Web analytics
-- **Vercel Speed Insights** - Performance monitoring
-- **Custom Analytics** - Event tracking with Prisma
-
-## 🎯 API Endpoints
-
-### Upload Image
-```typescript
-POST /api/upload
-Content-Type: multipart/form-data
-
-Body:
-- file: File (max 10MB)
-- imageType: 'person' | 'person-pet'
-
-Response:
-{
-  success: true,
-  url: "/uploads/filename.jpg",
-  filename: "filename.jpg",
-  size: 1234567
-}
-```
-
-### Process Image
-```typescript
-POST /api/studio
-Content-Type: application/json
-
-Body:
-{
-  imageUrl: string,
-  imageType: 'person' | 'person-pet',
-  userId?: string
-}
-
-Response:
-{
-  success: true,
-  id: string,
-  processedUrls: string[],
-  watermarkId: string,
-  processingTime: number
-}
-```
-
-### Create Payment
-```typescript
-POST /api/payment
-Content-Type: application/json
-
-Body:
-{
-  plan: 'basic' | 'pro' | 'vip',
-  userId: string,
-  email: string,
-  type?: 'intent' | 'checkout'
-}
-
-Response:
-{
-  success: true,
-  clientSecret: string,
-  amount: number
-}
-```
-
-### Webhook Handler
-```typescript
-POST /api/webhook
-Headers:
-- stripe-signature: string
-
-Body: Stripe event payload
-```
-
-## 🔧 Configuration
-
-### Database Schema
-
-The application uses Prisma with PostgreSQL. Key models:
-
-- **User** - User accounts
-- **ProcessedImage** - Image processing records
-- **Payment** - Payment transactions
-- **Subscription** - Subscription management
-- **Analytics** - Event tracking
-- **RateLimit** - Rate limiting data
-
-### Environment Variables
-
-See `.env.example` for all required environment variables.
-
-### Stripe Setup
-
-1. Create a Stripe account
-2. Get your API keys from the dashboard
-3. Create products and prices for each plan
-4. Set up webhook endpoint: `https://yourdomain.com/api/webhook`
-5. Add webhook secret to `.env`
-
-### Replicate Setup
-
-1. Create a Replicate account
-2. Get your API token
-3. Add to `.env` as `REPLICATE_API_TOKEN`
-
-## 📊 Performance Optimizations
-
-### Image Optimization
-- Sharp for server-side processing
-- Next.js Image component for lazy loading
-- WebP format support
-- Responsive images with srcset
-
-### Code Splitting
-- Dynamic imports for heavy components
-- Route-based code splitting
-- Optimized bundle size
-
-### Caching
-- Static asset caching
-- API response caching
-- Database query optimization
-
-### SEO
-- Meta tags optimization
-- Open Graph tags
-- Twitter Card tags
-- Sitemap generation
-
-## 🧪 Testing
+### Installation & Setup
 
 ```bash
-# Run type checking
-npm run type-check
+# Quick setup (recommended)
+pnpm run setup
 
-# Run linting
-npm run lint
+# Or manual setup:
+pnpm install
+pnpm run setup:safe-ship
 
-# Format code
-npm run format
+# Start development server
+pnpm dev
 ```
 
-## 🚢 Deployment
+## 📋 Available Scripts
 
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Add environment variables
-4. Deploy!
-
+### Development
 ```bash
-# Or use Vercel CLI
-npm i -g vercel
-vercel
+pnpm dev                 # Start development server
+pnpm build              # Build for production
+pnpm start              # Start production server
 ```
 
-### Docker
-
+### Database
 ```bash
-# Build image
-docker build -t studio-nexora .
-
-# Run container
-docker run -p 3000:3000 studio-nexora
+pnpm run db:push        # Push schema changes
+pnpm run db:studio      # Open Prisma Studio
+pnpm run db:generate    # Generate Prisma client
+pnpm run seed           # Seed test data
 ```
 
-### Manual Deployment
-
+### Testing & QA
 ```bash
-# Build for production
-npm run build
-
-# Start production server
-npm start
+pnpm run verify         # Lint + type-check
+pnpm run test           # Run Playwright tests
+pnpm run test:ui        # Run tests with UI
+pnpm run lighthouse     # Run Lighthouse audit
+pnpm run qa:full        # Complete QA pipeline
 ```
 
-## 🔐 Security Best Practices
+### Deployment
+```bash
+pnpm run deploy:preview # Deploy to staging
+pnpm run deploy         # Deploy to production
+```
 
-- ✅ Input validation with Zod
-- ✅ Rate limiting on all endpoints
-- ✅ CSRF protection
-- ✅ Secure headers (CSP, HSTS, etc.)
-- ✅ File type and size validation
-- ✅ SQL injection prevention (Prisma)
-- ✅ XSS protection
-- ✅ Environment variable security
+### Maintenance
+```bash
+pnpm run worker:start   # Start job worker
+pnpm run queue:clean    # Clean old jobs
+pnpm run setup:stripe   # Setup Stripe products
+```
 
-## 📈 Monitoring & Analytics
+## 🏗️ Architecture
 
-### Built-in Analytics
-- Image processing events
-- Payment completions
-- Error tracking
-- User engagement
+### Tech Stack
+- **Framework**: Next.js 14 with App Router
+- **Authentication**: NextAuth.js with email + Google
+- **Database**: PostgreSQL with Prisma ORM
+- **Payments**: Stripe with webhooks
+- **Storage**: Cloudflare R2 / AWS S3
+- **Queue**: Bull with Redis
+- **Styling**: Tailwind CSS + Radix UI
+- **i18n**: next-intl with 12 languages
+- **Testing**: Playwright + Lighthouse CI
 
-### External Services
-- Vercel Analytics for web vitals
-- Stripe Dashboard for payments
-- Database monitoring with Prisma
+### Key Components
 
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/) - The React Framework
-- [Replicate](https://replicate.com/) - AI Model Hosting
-- [Stripe](https://stripe.com/) - Payment Processing
-- [Vercel](https://vercel.com/) - Hosting Platform
-- [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
-
-## 📞 Support
-
-- 📧 Email: support@studionexora.com
-- 💬 Discord: [Join our community](https://discord.gg/studionexora)
-- 🐦 Twitter: [@studionexora](https://twitter.com/studionexora)
-- 📖 Documentation: [docs.studionexora.com](https://docs.studionexora.com)
-
-## 🗺️ Roadmap
-
-- [ ] Video processing support
-- [ ] Batch processing
-- [ ] Mobile app (React Native)
-- [ ] Advanced editing tools
-- [ ] Social media integration
-- [ ] Marketplace for backgrounds
-- [ ] API for developers
-- [ ] White-label solution
-
----
-
-Made with ❤️ by Studio Nexora Team
-
-**100x Optimized** | **Production Ready** | **Enterprise Grade**
-#   s t u d i o - n e x o r a  
- 
+#### Authentication Flow
