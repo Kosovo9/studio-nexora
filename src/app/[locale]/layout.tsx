@@ -6,7 +6,21 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { LanguageSelector } from '@/components/LanguageSelector'
 import { locales } from '@/i18n/config'
+import dynamic from 'next/dynamic'
+import { Toaster } from 'sonner'
 import '../globals.css'
+
+// Dynamic import of EarthCanvas with SSR disabled
+const EarthCanvas = dynamic(() => import('@/components/EarthCanvas'), {
+  ssr: false,
+  loading: () => (
+    <div className="fixed inset-0 -z-10 pointer-events-none bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-400"></div>
+      </div>
+    </div>
+  )
+})
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -104,13 +118,17 @@ export default async function RootLayout({
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <NextIntlClientProvider locale={params.locale} messages={messages}>
-          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-            <header className="p-4">
+          {/* 3D Earth Canvas Background - fixed inset-0 -z-10 pointer-events-none */}
+          <EarthCanvas className="fixed inset-0 -z-10 pointer-events-none" />
+          
+          <div className="min-h-screen relative">
+            <header className="p-4 relative z-10">
               <LanguageSelector currentLocale={params.locale} />
             </header>
             {children}
           </div>
         </NextIntlClientProvider>
+        <Toaster />
         <Analytics />
         <SpeedInsights />
       </body>

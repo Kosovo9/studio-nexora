@@ -7,17 +7,25 @@ interface PageProps {
 }
 
 export default async function StudioNexora({ params }: PageProps) {
-  const t = await getTranslations('common')
+  const t = await getTranslations()
 
   const translations = {
-    title: '✨ Studio Nexora',
-    subtitle: 'Fotografía de estudio hiperrealista con IA. Sube tu foto y elige tu estilo.',
-    uploadText: 'Sube tu foto para comenzar',
-    basicPlan: 'Básico',
-    proPlan: 'Pro',
-    vipPlan: 'VIP',
-    choosePlan: 'Choose Plan'
+    title: '✨ Studio Nexora ⭐',
+    subtitle: t('hero.subtitle'),
+    uploadText: t('upload.title'),
+    basicPlan: t('pricing.basic.name'),
+    proPlan: t('pricing.pro.name'),
+    vipPlan: t('pricing.vip.name'),
+    choosePlan: t('pricing.choosePlan'),
+    buildStatus: 'BUILD OK',
+    currentLocale: params.locale.toUpperCase(),
+    heroTitle: t('hero.title'),
+    heroSubtitle: t('hero.subtitle'),
+    heroCta: t('hero.cta'),
+    loginText: t('navigation.login'),
+    signupText: t('navigation.signup'),
+    logoutText: t('navigation.logout')
   }
 
-  return <StudioNexoraClient translations={translations} />
+  return <StudioNexoraClient translations={translations} locale={params.locale} />
 }

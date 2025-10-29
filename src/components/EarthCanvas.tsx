@@ -95,12 +95,12 @@ const EarthCanvas: React.FC<EarthCanvasProps> = ({
         // Earth geometry and materials
         const geometry = new THREE.SphereGeometry(1, 128, 128);
         
-        // Load real Earth textures from NASA/Blue Marble
+        // Load local Earth textures
         const textureLoader = new THREE.TextureLoader();
         const [earthTexture, normalTexture, roughnessTexture, cloudsTexture] = await Promise.all([
           new Promise<THREE.Texture>((resolve, reject) => {
             textureLoader.load(
-                'https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg',
+                '/textures/earth_day.jpg',
                 (texture: THREE.Texture) => {
                   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
                   texture.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
@@ -108,7 +108,7 @@ const EarthCanvas: React.FC<EarthCanvasProps> = ({
                 },
               undefined,
               () => {
-                // Fallback to high-quality Earth texture
+                // Fallback to external high-quality Earth texture
                 textureLoader.load(
                   'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=2048&q=80',
                   resolve,
@@ -120,33 +120,52 @@ const EarthCanvas: React.FC<EarthCanvasProps> = ({
           }),
           new Promise<THREE.Texture>((resolve, reject) => {
               textureLoader.load(
-                'https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg',
+                '/textures/earth_bump.jpg',
                 (texture: THREE.Texture) => {
                   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
                   resolve(texture);
                 },
               undefined,
-              () => resolve(earthTexture) // Fallback to main texture
+              () => {
+                // Fallback to day texture for bump map
+                textureLoader.load('/textures/earth_day.jpg', resolve, undefined, reject);
+              }
             );
           }),
           new Promise<THREE.Texture>((resolve, reject) => {
             textureLoader.load(
-              'https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg',
+              '/textures/earth_day.jpg',
               resolve,
               undefined,
-              () => resolve(earthTexture) // Fallback to main texture
+              () => {
+                // Fallback to external texture
+                textureLoader.load(
+                  'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=2048&q=80',
+                  resolve,
+                  undefined,
+                  reject
+                );
+              }
             );
           }),
           new Promise<THREE.Texture>((resolve, reject) => {
               textureLoader.load(
-                'https://eoimages.gsfc.nasa.gov/images/imagerecords/74000/74218/world.200411.3x5400x2700.jpg',
+                '/textures/earth_day.jpg',
                 (texture: THREE.Texture) => {
                   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
                   texture.anisotropy = Math.min(2, renderer.capabilities.getMaxAnisotropy());
                   resolve(texture);
                 },
               undefined,
-              () => resolve(earthTexture) // Fallback to main texture
+              () => {
+                // Fallback to external texture
+                textureLoader.load(
+                  'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=2048&q=80',
+                  resolve,
+                  undefined,
+                  reject
+                );
+              }
             );
           })
         ]);
