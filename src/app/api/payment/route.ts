@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { auth } from '@clerk/nextjs';
 import { stripe, createPaymentIntent, createCheckoutSession } from '@/lib/stripe';
-import { paymentRateLimit } from '@/lib/ratelimit';
 import { prisma } from '@/lib/prisma';
-import { paymentRateLimit } from '@/lib/ratelimit';
 import type { PlanType } from '@/types';
 import crypto from 'crypto';
 
@@ -882,16 +880,8 @@ async function handleRemovePaymentMethod(userId: string, body: any) {
   });
 }
 
-// Rate limiting constants
-const RATE_LIMIT_PAYMENT = 10; // Max payment attempts per window
-const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
-
-// Plan pricing configuration
-const PLAN_PRICES = {
-  basic: { monthly: 999, yearly: 9999 }, // $9.99/month, $99.99/year
-  pro: { monthly: 1999, yearly: 19999 }, // $19.99/month, $199.99/year
-  vip: { monthly: 4999, yearly: 49999 }  // $49.99/month, $499.99/year
-};
+// Rate limiting constants (already defined at top of file - lines 68-76)
+// Removed duplicate definitions
 
 // Types
 interface PaymentRequest {
@@ -930,12 +920,18 @@ interface CouponValidation {
 
 // Rate limiting for payment endpoints
 async function checkPaymentRateLimit(ip: string): Promise<{ allowed: boolean; retryAfter?: number }> {
-  const now = Date.now();
+  // Simple in-memory rate limiting
   const key = `payment_${ip}`;
-  const limit = paymentRateLimit.get(key);
+  const now = Date.now();
+  
+  if (!global.paymentRateLimitStore) {
+    global.paymentRateLimitStore = new Map<string, { count: number; resetTime: number }>();
+  }
+  
+  const limit = global.paymentRateLimitStore.get(key);
 
   if (!limit || now > limit.resetTime) {
-    paymentRateLimit.set(key, {
+    global.paymentRateLimitStore.set(key, {
       count: 1,
       resetTime: now + RATE_LIMIT_WINDOW
     });
@@ -951,6 +947,10 @@ async function checkPaymentRateLimit(ip: string): Promise<{ allowed: boolean; re
 
   limit.count++;
   return { allowed: true };
+}
+
+declare global {
+  var paymentRateLimitStore: Map<string, { count: number; resetTime: number }> | undefined;
 }
 
 // Validate payment request

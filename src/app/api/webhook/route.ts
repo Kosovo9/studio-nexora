@@ -18,14 +18,7 @@ interface WebhookEvent {
 }
 
 // Helper functions
-function verifyWebhookSignature(body: string, signature: string) {
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!endpointSecret) {
-    throw new Error('Missing Stripe webhook secret');
-  }
-
-  return stripe.webhooks.constructEvent(body, signature, endpointSecret);
-}
+// verifyWebhookSignature is imported from @/lib/stripe
 
 // Enhanced webhook processing utilities
 async function checkWebhookRateLimit(ip: string): Promise<{ allowed: boolean; remaining: number }> {

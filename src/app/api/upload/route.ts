@@ -9,7 +9,7 @@ import { S3Client, PutObjectCommand, HeadObjectCommand, DeleteObjectCommand } fr
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { prisma } from '@/lib/prisma';
 import crypto from 'crypto';
-import { rateLimit } from '@/lib/rate-limit';
+import { rateLimit } from '@/lib/ratelimit';
 
 // Enhanced configuration
 const MAX_FILE_SIZE = parseInt(process.env.MAX_FILE_SIZE || '52428800'); // 50MB
@@ -114,70 +114,8 @@ const s3Client = new S3Client({
   },
 });
 
-// Rate limiting store
-const rateLimitMap = new Map<string, number[]>();
-
-// Enhanced rate limiting with burst protection
-const rateLimit = {
-  async check(ip: string, action: string, options: {
-    max: number;
-    window: number;
-    burst?: number;
-  }): Promise<{ allowed: boolean; remaining: number; resetTime: number }> {
-    const now = Date.now();
-    const windowStart = now - options.window;
-    const key = `${ip}:${action}`;
-    
-    if (!rateLimitMap.has(key)) {
-      rateLimitMap.set(key, []);
-    }
-    
-    const requests = rateLimitMap.get(key)!;
-    const validRequests = requests.filter(timestamp => timestamp > windowStart);
-    
-    // Check burst protection
-    if (options.burst) {
-      const recentRequests = validRequests.filter(timestamp => timestamp > now - 60000); // Last minute
-      if (recentRequests.length >= options.burst) {
-        return {
-          allowed: false,
-          remaining: 0,
-          resetTime: Math.max(...recentRequests) + 60000,
-        };
-      }
-    }
-    
-    const allowed = validRequests.length < options.max;
-    
-    if (allowed) {
-      validRequests.push(now);
-      rateLimitMap.set(key, validRequests);
-    }
-    
-    return {
-      allowed,
-      remaining: Math.max(0, options.max - validRequests.length - (allowed ? 1 : 0)),
-      resetTime: windowStart + options.window,
-    };
-  }
-};
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const userLimit = rateLimit.get(ip);
-
-  if (!userLimit || now > userLimit.resetAt) {
-    rateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
-    return true;
-  }
-
-  if (userLimit.count >= RATE_LIMIT_UPLOAD) {
-    return false;
-  }
-
-  userLimit.count++;
-  return true;
-}
+// Rate limiting (imported from @/lib/ratelimit)
+// Removed duplicate local definition
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
@@ -925,37 +863,8 @@ export async function DELETE(request: NextRequest) {
   }
 }
 
-// Configuration constants
-const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
-const MAX_BATCH_SIZE = 20; // Maximum files per batch upload
-const ALLOWED_TYPES = [
-  // Images
-  'image/jpeg',
-  'image/png', 
-  'image/webp',
-  'image/gif',
-  'image/svg+xml',
-  // Documents
-  'application/pdf',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'text/plain',
-  'text/csv',
-  // Archives
-  'application/zip',
-  'application/x-rar-compressed',
-  // Audio
-  'audio/mpeg',
-  'audio/wav',
-  'audio/ogg',
-  // Video
-  'video/mp4',
-  'video/webm',
-  'video/quicktime',
-];
-
-const RATE_LIMIT_UPLOAD = 20; // requests per window
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+// Configuration constants (already defined at top of file - lines 15-19)
+// Removed duplicate definitions
 
 // Security constants
 const BLOCKED_EXTENSIONS = [

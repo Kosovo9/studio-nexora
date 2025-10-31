@@ -6,11 +6,11 @@
 import { NextAuthOptions } from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
 import GoogleProvider from 'next-auth/providers/google';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
+// import { PrismaAdapter } from '@next-auth/prisma-adapter'; // Optional - only if using NextAuth
 import { prisma } from './prisma';
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma), // Commented out - install @next-auth/prisma-adapter if needed
   providers: [
     EmailProvider({
       server: {
