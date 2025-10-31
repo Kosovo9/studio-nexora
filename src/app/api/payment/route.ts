@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { auth } from '@clerk/nextjs';
 import { stripe, createPaymentIntent, createCheckoutSession } from '@/lib/stripe';
+import { paymentRateLimit } from '@/lib/ratelimit';
 import { prisma } from '@/lib/prisma';
+import { paymentRateLimit } from '@/lib/ratelimit';
 import type { PlanType } from '@/types';
 import crypto from 'crypto';
 
@@ -73,8 +75,7 @@ const PLAN_PRICES = {
   vip: { monthly: 9999, yearly: 99999 }
 };
 
-// Rate limiting store
-const paymentRateLimit = new Map<string, { count: number; resetTime: number }>();
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -923,8 +924,7 @@ interface CouponValidation {
   discountPercent?: number;
 }
 
-// Rate limiting store
-const paymentRateLimit = new Map<string, { count: number; resetTime: number }>();
+
 
 // Helper Functions
 
@@ -1311,3 +1311,7 @@ async function handlePaymentIntent(params: {
     }
   };
 }
+
+
+
+

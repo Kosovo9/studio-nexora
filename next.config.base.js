@@ -1,24 +1,56 @@
-const withNextIntl = require('next-intl/plugin')('./src/i18n.ts');
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-  output: 'standalone',
+  // Performance optimizations
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', '@supabase/supabase-js'],
+  },
+
+  // Image optimization
   images: {
-    domains: ['replicate.delivery', 'replicate.com', 'localhost'],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 31536000,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
+
+  // Compression and optimization
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: true,
+
+  // Bundle optimization
+  webpack: (config, { dev }) => {
+    if (!dev) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+              priority: 10,
+            },
+            common: {
+              name: 'common',
+              minChunks: 2,
+              chunks: 'all',
+              priority: 5,
+              reuseExistingChunk: true,
+            },
+          },
+        },
+      };
+    }
+    return config;
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
-  headers: async () => {
+
+  // Headers for performance
+  async headers() {
     return [
       {
         source: '/(.*)',
@@ -28,36 +60,22 @@ const nextConfig = {
             value: 'nosniff',
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: 'Cache-Control',
+            value: 'public, max-age=3600',
           },
+        ],
+      },
+      {
+        source: '/static/(.*)',
+        headers: [
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
     ];
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
-  },
 };
 
-module.exports = withNextIntl(nextConfig);
+module.exports = nextConfig;

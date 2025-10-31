@@ -1,0 +1,26 @@
+{
+  "common": {
+    "welcome": "Welcome to Nexora Studio Pro",
+    "description": "Create professional studio photos with AI",
+    "createPhoto": "Create Studio Photo",
+    "login": "Sign In",
+    "signup": "Sign Up",
+    "logout": "Sign Out",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "navigation": {
+    "home": "Home",
+    "pricing": "Pricing",
+    "gallery": "Gallery",
+    "about": "About",
+    "contact": "Contact",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Transform your photos with AI",
+    "subtitle": "Create professional studio photos in seconds",
+    "cta": "Get Started"
+  }
+}

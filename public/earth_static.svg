@@ -1,0 +1,36 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="earthGradient" cx="0.3" cy="0.3" r="0.8">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#2E7D32;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#1565C0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D47A1;stop-opacity:1" />
+    </radialGradient>
+    <radialGradient id="atmosphereGradient" cx="0.5" cy="0.5" r="0.6">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#4169E1;stop-opacity:0.1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Earth sphere -->
+  <circle cx="200" cy="200" r="180" fill="url(#earthGradient)" />
+  
+  <!-- Continents (simplified) -->
+  <path d="M120 150 Q140 130 160 140 Q180 135 200 145 Q220 140 240 150 Q260 145 280 155 L280 180 Q260 190 240 185 Q220 195 200 190 Q180 200 160 195 Q140 190 120 180 Z" fill="#2E7D32" opacity="0.8"/>
+  <path d="M100 220 Q120 210 140 215 Q160 210 180 220 Q200 215 220 225 L220 250 Q200 260 180 255 Q160 265 140 260 Q120 255 100 245 Z" fill="#388E3C" opacity="0.7"/>
+  <path d="M250 180 Q270 170 290 175 Q310 170 330 180 L330 210 Q310 220 290 215 Q270 225 250 220 Z" fill="#4CAF50" opacity="0.6"/>
+  
+  <!-- Atmosphere glow -->
+  <circle cx="200" cy="200" r="190" fill="url(#atmosphereGradient)" />
+  
+  <!-- Highlight -->
+  <ellipse cx="160" cy="140" rx="40" ry="60" fill="#FFFFFF" opacity="0.2" />
+  
+  <!-- Stars background -->
+  <circle cx="50" cy="50" r="1" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="350" cy="80" r="1" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="80" cy="350" r="1" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="320" cy="320" r="1" fill="#FFFFFF" opacity="0.9"/>
+  <circle cx="30" cy="200" r="1" fill="#FFFFFF" opacity="0.5"/>
+  <circle cx="370" cy="250" r="1" fill="#FFFFFF" opacity="0.8"/>
+</svg>

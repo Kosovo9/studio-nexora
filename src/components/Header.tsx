@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -41,7 +41,7 @@ interface NavItem {
   external?: boolean;
 }
 
-export function Header({ 
+function Header({ 
   currentLocale = 'en', 
   isAuthenticated = false, 
   userRole = 'user',
@@ -374,3 +374,6 @@ export function Header({
     </header>
   );
 }
+
+
+export default Header;

@@ -1,4 +1,4 @@
-ttomas and features to/**
+/**
  * Clerk Authentication Integration
  * Modern authentication with social logins, MFA, and more
  */

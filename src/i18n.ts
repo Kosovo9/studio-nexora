@@ -1,17 +1,15 @@
 import { getRequestConfig } from 'next-intl/server';
-import { locales, type Locale } from './i18n/config';
+import { LOCALES, DEFAULT_LOCALE, isValidLocale } from './i18n/locales';
 
-export default getRequestConfig(async ({ requestLocale }) => {
-  // This function can be called before the locale is available
-  let locale = await requestLocale;
-  
-  // Provide a fallback locale if none is available
-  if (!locale || !locales.includes(locale as Locale)) {
-    locale = 'en';
+export default getRequestConfig(async ({ locale }) => {
+  // Validar que el locale es válido
+  if (!isValidLocale(locale)) {
+    locale = DEFAULT_LOCALE;
   }
 
   return {
-    locale,
     messages: (await import(`./i18n/messages/${locale}.json`)).default
   };
 });
+
+export { LOCALES, DEFAULT_LOCALE };

@@ -268,7 +268,7 @@ studio-nexora/
 - Best Practices: 100
 - SEO: 100
 
-### Core Web Vitals
+### Core Web Studio Nexoras
 - LCP (Largest Contentful Paint): < 2.5s
 - FID (First Input Delay): < 100ms
 - CLS (Cumulative Layout Shift): < 0.1

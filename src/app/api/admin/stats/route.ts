@@ -417,8 +417,6 @@ export async function GET(request: NextRequest): Promise<NextResponse<AdminStats
     const now = new Date();
     const timeRanges = calculateTimeRanges(timeRange);
     
-    // Calculate date ranges
-    const now = new Date();
     const ranges = calculateDateRanges(timeRange);
 
     // Gather comprehensive statistics
@@ -1032,3 +1030,4 @@ async function logAdminAccess(userId: string, data: any) {
 async function logSystemError(data: any) {
   console.log(`System error:`, data);
 }
+

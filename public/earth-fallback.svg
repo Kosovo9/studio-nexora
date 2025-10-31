@@ -1,0 +1,49 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="earthGradient" cx="0.3" cy="0.3" r="0.8">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#4682B4;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#2F4F4F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#191970;stop-opacity:1" />
+    </radialGradient>
+    <radialGradient id="continentGradient" cx="0.4" cy="0.4" r="0.6">
+      <stop offset="0%" style="stop-color:#228B22;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#006400;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#2F4F2F;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background space -->
+  <rect width="1920" height="1080" fill="#000011"/>
+  
+  <!-- Stars -->
+  <circle cx="200" cy="150" r="1" fill="white" opacity="0.8"/>
+  <circle cx="400" cy="200" r="1.5" fill="white" opacity="0.6"/>
+  <circle cx="600" cy="100" r="1" fill="white" opacity="0.9"/>
+  <circle cx="800" cy="250" r="1" fill="white" opacity="0.7"/>
+  <circle cx="1000" cy="180" r="1.5" fill="white" opacity="0.5"/>
+  <circle cx="1200" cy="120" r="1" fill="white" opacity="0.8"/>
+  <circle cx="1400" cy="220" r="1" fill="white" opacity="0.6"/>
+  <circle cx="1600" cy="160" r="1.5" fill="white" opacity="0.9"/>
+  <circle cx="300" cy="400" r="1" fill="white" opacity="0.7"/>
+  <circle cx="500" cy="450" r="1" fill="white" opacity="0.5"/>
+  <circle cx="700" cy="380" r="1.5" fill="white" opacity="0.8"/>
+  <circle cx="900" cy="420" r="1" fill="white" opacity="0.6"/>
+  <circle cx="1100" cy="460" r="1" fill="white" opacity="0.9"/>
+  <circle cx="1300" cy="400" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="1500" cy="440" r="1" fill="white" opacity="0.5"/>
+  
+  <!-- Earth sphere -->
+  <circle cx="960" cy="540" r="300" fill="url(#earthGradient)" opacity="0.9"/>
+  
+  <!-- Continents (simplified shapes) -->
+  <path d="M 800 450 Q 850 420 900 440 Q 950 460 980 450 Q 1020 440 1050 460 Q 1080 480 1100 500 Q 1120 520 1100 540 Q 1080 560 1050 570 Q 1020 580 980 570 Q 950 560 920 550 Q 890 540 860 530 Q 830 520 810 500 Q 790 480 800 450 Z" fill="url(#continentGradient)"/>
+  
+  <path d="M 720 520 Q 750 500 780 510 Q 810 520 830 540 Q 850 560 840 580 Q 830 600 810 610 Q 790 620 770 610 Q 750 600 730 580 Q 710 560 710 540 Q 710 520 720 520 Z" fill="url(#continentGradient)"/>
+  
+  <path d="M 1050 480 Q 1080 470 1110 480 Q 1140 490 1160 510 Q 1180 530 1170 550 Q 1160 570 1140 580 Q 1120 590 1100 580 Q 1080 570 1060 560 Q 1040 550 1040 530 Q 1040 510 1050 480 Z" fill="url(#continentGradient)"/>
+  
+  <!-- Clouds/atmosphere effect -->
+  <circle cx="960" cy="540" r="300" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+  <circle cx="960" cy="540" r="305" fill="none" stroke="rgba(135,206,235,0.1)" stroke-width="1"/>
+</svg>

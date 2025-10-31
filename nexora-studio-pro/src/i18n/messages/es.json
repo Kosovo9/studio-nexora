@@ -1,0 +1,26 @@
+{
+  "common": {
+    "welcome": "Bienvenido a Nexora Studio Pro",
+    "description": "Crea fotos de estudio profesionales con IA",
+    "createPhoto": "Crear Foto de Estudio",
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar Sesión",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "pricing": "Precios",
+    "gallery": "Galería",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Transforma tus fotos con IA",
+    "subtitle": "Crea fotos de estudio profesionales en segundos",
+    "cta": "Comenzar Ahora"
+  }
+}

@@ -1,199 +1,44 @@
 {
   "common": {
+    "welcome": "Welcome to Studio Nexora",
+    "description": "Create professional studio photos with AI",
+    "createPhoto": "Create Studio Photo",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "language": "Language",
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "upload": "Upload",
-    "download": "Download",
-    "share": "Share"
+    "success": "Success"
   },
   "navigation": {
     "home": "Home",
     "gallery": "Gallery",
     "pricing": "Pricing",
     "about": "About",
-    "contact": "Contact",
-    "login": "Login",
-    "signup": "Sign Up",
-    "logout": "Logout",
-    "profile": "Profile",
-    "admin": "Admin"
-  },
-  "hero": {
-    "title": "Transform Your Photos with AI",
-    "subtitle": "Create professional studio portraits with advanced artificial intelligence",
-    "cta": "Get Started",
-    "features": {
-      "ai": "Advanced AI",
-      "fast": "Fast Results",
-      "quality": "Professional Quality"
-    }
-  },
-  "upload": {
-    "title": "Upload Your Photo",
-    "dragDrop": "Drag and drop your image here",
-    "or": "or",
-    "clickToUpload": "Click to upload",
-    "supportedFormats": "Supported formats: JPEG, PNG, WebP",
-    "maxSize": "Max size: 10MB",
-    "processing": "Processing...",
-    "selectType": "Select photo type",
-    "soloMe": "Solo Me",
-    "meAndPet": "Me + My Pet",
-    "consent": "I agree to the terms and conditions",
-    "consentRequired": "You must accept the terms to continue",
-    "createStudioPhoto": "Create Studio Photo",
-    "errors": {
-      "fileSize": "File size must be less than 10MB",
-      "fileType": "Please upload a valid image (JPEG, PNG, or WebP)",
-      "uploadFailed": "Failed to upload image",
-      "processingFailed": "Failed to process image"
-    }
-  },
-  "pricing": {
-    "title": "Choose Your Plan",
-    "subtitle": "Flexible plans for all your needs",
-    "monthly": "Monthly",
-    "yearly": "Yearly",
-    "save": "Save",
-    "choosePlan": "Choose Plan",
-    "popular": "Most Popular",
-    "basic": {
-      "name": "Basic",
-      "price": "$5",
-      "description": "Perfect for personal use",
-      "features": [
-        "5 photos per month",
-        "Standard quality",
-        "Email support",
-        "Personal gallery"
-      ]
-    },
-    "pro": {
-      "name": "Pro",
-      "price": "$15",
-      "description": "Ideal for professionals",
-      "features": [
-        "50 photos per month",
-        "Premium quality",
-        "Priority support",
-        "Advanced gallery",
-        "High-res downloads",
-        "No watermark"
-      ]
-    },
-    "vip": {
-      "name": "VIP",
-      "price": "$30",
-      "description": "For commercial use",
-      "features": [
-        "Unlimited photos",
-        "Maximum quality",
-        "24/7 support",
-        "API access",
-        "Commercial license",
-        "Priority processing"
-      ]
-    }
+    "contact": "Contact"
   },
   "auth": {
-    "login": {
-      "title": "Sign In",
-      "subtitle": "Access your account",
-      "email": "Email address",
-      "password": "Password",
-      "forgotPassword": "Forgot your password?",
-      "noAccount": "Don't have an account?",
-      "signupLink": "Sign up here",
-      "loginButton": "Sign In",
-      "magicLink": "Send magic link",
-      "googleLogin": "Continue with Google"
-    },
-    "signup": {
-      "title": "Create Account",
-      "subtitle": "Join Studio Nexora",
-      "name": "Full name",
-      "email": "Email address",
-      "password": "Password",
-      "confirmPassword": "Confirm password",
-      "hasAccount": "Already have an account?",
-      "loginLink": "Sign in here",
-      "signupButton": "Create Account",
-      "terms": "By signing up, you agree to our",
-      "termsLink": "Terms and Conditions",
-      "privacy": "and",
-      "privacyLink": "Privacy Policy"
-    },
-    "reset": {
-      "title": "Reset Password",
-      "subtitle": "We'll send you a link to reset your password",
-      "email": "Email address",
-      "sendLink": "Send Link",
-      "backToLogin": "Back to sign in",
-      "checkEmail": "Check your email",
-      "emailSent": "We've sent you a password reset link"
-    }
+    "signInWithEmail": "Sign in with email",
+    "signInWithGoogle": "Sign in with Google",
+    "emailPlaceholder": "your@email.com",
+    "passwordPlaceholder": "Password",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signup": "Sign Up",
+    "login": "Log In",
+    "logout": "Log Out",
+    "profile": "Profile"
   },
-  "admin": {
-    "title": "Admin Dashboard",
-    "dashboard": "Dashboard",
-    "users": "Users",
-    "orders": "Orders",
-    "settings": "Settings",
-    "analytics": "Analytics",
-    "content": "Content",
-    "pricing": "Pricing",
-    "features": "Features",
-    "assets": "Assets",
-    "colors": "Colors",
-    "theme": "Theme",
-    "languages": "Languages",
-    "logs": "Logs",
-    "metrics": "Metrics"
-  },
-  "footer": {
-    "company": "Company",
-    "about": "About",
-    "careers": "Careers",
-    "contact": "Contact",
-    "legal": "Legal",
-    "terms": "Terms of Service",
-    "privacy": "Privacy Policy",
-    "refunds": "Refund Policy",
-    "intellectual": "Intellectual Property",
-    "aiUsage": "AI Usage",
-    "watermark": "Watermark Policy",
-    "limitations": "Limitations",
-    "security": "Security",
-    "support": "Support",
-    "help": "Help",
-    "faq": "FAQ",
-    "community": "Community",
-    "copyright": "© 2025 Studio Nexora. All rights reserved.",
-    "madeWith": "Made with ❤️ for creators"
-  },
-  "errors": {
-    "404": {
-      "title": "Page not found",
-      "description": "The page you're looking for doesn't exist",
-      "backHome": "Back to home"
-    },
-    "500": {
-      "title": "Server error",
-      "description": "Something went wrong on our servers",
-      "tryAgain": "Try again"
-    },
-    "unauthorized": "Unauthorized",
-    "forbidden": "Access denied",
-    "rateLimited": "Too many requests. Please try again later."
+  "studio": {
+    "title": "AI Photo Studio",
+    "subtitle": "Transform your photos into professional portraits",
+    "uploadTitle": "Upload your photo",
+    "uploadDescription": "Select a high-quality photo for best results",
+    "selectStyle": "Select a style",
+    "generateButton": "Generate Studio Photo",
+    "processing": "Processing your photo...",
+    "downloadButton": "Download"
   }
 }

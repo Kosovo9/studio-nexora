@@ -29,10 +29,10 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-slate-200;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-slate-900 text-slate-100;
   }
 }
 
@@ -40,6 +40,36 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Accessibility and Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+/* Optimize font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* GPU acceleration for animations */
+.animate-gpu {
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* Custom scrollbar */

@@ -96,7 +96,7 @@
 - [ ] Image optimization verified
 - [ ] Caching strategy implemented
 - [ ] Bundle size optimized
-- [ ] Core Web Vitals measured
+- [ ] Core Web Studio Nexoras measured
 
 ### Backup & Recovery
 - [ ] Database backup strategy implemented

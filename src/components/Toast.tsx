@@ -2,16 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  CheckCircle, 
-  XCircle, 
-  AlertCircle, 
-  Info, 
+import {
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Info,
   X,
   Loader2,
-  Zap,
-  Wifi,
-  WifiOff
+  Wifi
+  // WifiOff, Zap - removed unused imports
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -50,25 +49,25 @@ const toastStyles = {
   error: 'bg-red-900/90 border-red-500/50 text-red-100',
   warning: 'bg-yellow-900/90 border-yellow-500/50 text-yellow-100',
   info: 'bg-blue-900/90 border-blue-500/50 text-blue-100',
-  loading: 'bg-purple-900/90 border-purple-500/50 text-purple-100',
-  network: 'bg-gray-900/90 border-gray-500/50 text-gray-100'
+  loading: 'bg-gray-900/90 border-gray-500/50 text-gray-100',
+  network: 'bg-orange-900/90 border-orange-500/50 text-orange-100'
 };
 
-const iconStyles = {
-  success: 'text-green-400',
-  error: 'text-red-400',
-  warning: 'text-yellow-400',
-  info: 'text-blue-400',
-  loading: 'text-purple-400 animate-spin',
-  network: 'text-gray-400'
+const positionClasses = {
+  'top-right': 'top-4 right-4',
+  'top-left': 'top-4 left-4',
+  'bottom-right': 'bottom-4 right-4',
+  'bottom-left': 'bottom-4 left-4',
+  'top-center': 'top-4 left-1/2 -translate-x-1/2',
+  'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2'
 };
 
-export function Toast({ 
-  id, 
-  type, 
-  title, 
-  message, 
-  duration = 5000, 
+export function Toast({
+  id,
+  type,
+  title,
+  message,
+  duration = 5000,
   persistent = false,
   action,
   progress,
@@ -77,186 +76,134 @@ export function Toast({
 }: ToastProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [timeLeft, setTimeLeft] = useState(duration);
-
   const Icon = toastIcons[type];
 
   useEffect(() => {
-    if (persistent || type === 'loading') return;
+    if (persistent) return;
 
     const timer = setTimeout(() => {
       setIsVisible(false);
       setTimeout(() => onClose(id), 300);
     }, duration);
 
-    const countdown = setInterval(() => {
+    const interval = setInterval(() => {
       setTimeLeft(prev => Math.max(0, prev - 100));
     }, 100);
 
     return () => {
       clearTimeout(timer);
-      clearInterval(countdown);
+      clearInterval(interval);
     };
-  }, [id, duration, persistent, type, onClose]);
+  }, [duration, persistent, onClose, id]);
 
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => onClose(id), 300);
-  };
-
-  const progressPercentage = persistent ? 0 : ((duration - timeLeft) / duration) * 100;
+  const progressPercentage = persistent ? 100 : (timeLeft / duration) * 100;
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: -20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: -20 }}
-          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className={cn(
-            'relative max-w-sm w-full rounded-lg border backdrop-blur-md shadow-xl overflow-hidden',
-            toastStyles[type]
-          )}
-          role="alert"
-          aria-live="polite"
-        >
-          {/* Progress bar */}
-          {!persistent && type !== 'loading' && (
-            <div className="absolute top-0 left-0 h-1 bg-white/20 w-full">
-              <motion.div
-                className="h-full bg-white/60"
-                initial={{ width: '0%' }}
-                animate={{ width: `${progressPercentage}%` }}
-                transition={{ duration: 0.1, ease: 'linear' }}
-              />
-            </div>
-          )}
-
-          {/* Loading progress bar */}
-          {type === 'loading' && typeof progress === 'number' && (
-            <div className="absolute top-0 left-0 h-1 bg-white/20 w-full">
-              <motion.div
-                className="h-full bg-purple-400"
-                initial={{ width: '0%' }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-              />
-            </div>
-          )}
-
-          <div className="p-4">
-            <div className="flex items-start space-x-3">
-              {/* Icon */}
-              <div className="flex-shrink-0 mt-0.5">
-                <Icon className={cn('w-5 h-5', iconStyles[type])} />
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-semibold mb-1">
-                  {title}
-                </h4>
-                {message && (
-                  <p className="text-sm opacity-90 leading-relaxed">
-                    {message}
-                  </p>
-                )}
-
-                {/* Action button */}
-                {action && (
-                  <button
-                    onClick={action.onClick}
-                    className="mt-3 text-sm font-medium underline hover:no-underline transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
-                  >
-                    {action.label}
-                  </button>
-                )}
-
-                {/* Loading progress text */}
-                {type === 'loading' && typeof progress === 'number' && (
-                  <div className="mt-2 text-xs opacity-75">
-                    {Math.round(progress)}% complete
-                  </div>
-                )}
-              </div>
-
-              {/* Close button */}
-              <button
-                onClick={handleClose}
-                className="flex-shrink-0 p-1 rounded-md hover:bg-white/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
-                aria-label="Close notification"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Glow effect for special types */}
-          {(type === 'success' || type === 'loading') && (
-            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
-          )}
-        </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: -50, scale: 0.95 }}
+      animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -50, scale: isVisible ? 1 : 0.95 }}
+      exit={{ opacity: 0, y: -50, scale: 0.95 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className={cn(
+        'fixed z-50 w-96 max-w-sm p-4 rounded-lg border backdrop-blur-sm shadow-lg',
+        toastStyles[type],
+        positionClasses[position]
       )}
-    </AnimatePresence>
+    >
+      <div className="flex items-start gap-3">
+        <div className="flex-shrink-0">
+          <Icon 
+            className={cn(
+              'w-5 h-5',
+              type === 'loading' && 'animate-spin'
+            )} 
+          />
+        </div>
+        
+        <div className="flex-1 min-w-0">
+          <h4 className="font-medium text-sm leading-5">{title}</h4>
+          {message && (
+            <p className="mt-1 text-sm opacity-90 leading-4">{message}</p>
+          )}
+          
+          {typeof progress === 'number' && (
+            <div className="mt-2">
+              <div className="w-full bg-white/20 rounded-full h-1.5">
+                <div 
+                  className="bg-white/60 h-1.5 rounded-full transition-all duration-300"
+                  style={{ width: {progress}% }}
+                />
+              </div>
+              <p className="text-xs opacity-75 mt-1">{progress}% complete</p>
+            </div>
+          )}
+          
+          {action && (
+            <button
+              onClick={action.onClick}
+              className="mt-2 text-sm font-medium underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
+            >
+              {action.label}
+            </button>
+          )}
+        </div>
+        
+        <button
+          onClick={() => {
+            setIsVisible(false);
+            setTimeout(() => onClose(id), 300);
+          }}
+          className="flex-shrink-0 p-1 rounded-md hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
+          aria-label="Close notification"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+      
+      {!persistent && (
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 rounded-b-lg overflow-hidden">
+          <div 
+            className="h-full bg-white/40 transition-all duration-100 ease-linear"
+            style={{ width: {progressPercentage}% }}
+          />
+        </div>
+      )}
+    </motion.div>
   );
 }
 
 // Toast Container Component
 interface ToastContainerProps {
-  toasts: ToastData[];
-  onClose: (id: string) => void;
-  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
-  maxToasts?: number;
+  position?: ToastProps['position'];
 }
 
-export function ToastContainer({ 
-  toasts, 
-  onClose, 
-  position = 'top-right',
-  maxToasts = 5 
-}: ToastContainerProps) {
-  const positionClasses = {
-    'top-right': 'top-4 right-4',
-    'top-left': 'top-4 left-4',
-    'bottom-right': 'bottom-4 right-4',
-    'bottom-left': 'bottom-4 left-4',
-    'top-center': 'top-4 left-1/2 transform -translate-x-1/2',
-    'bottom-center': 'bottom-4 left-1/2 transform -translate-x-1/2'
-  };
-
-  const visibleToasts = toasts.slice(0, maxToasts);
+export function ToastContainer({ position = 'top-right' }: ToastContainerProps) {
+  const { toasts } = useToast();
 
   return (
-    <div 
-      className={cn(
-        'fixed z-50 pointer-events-none',
-        positionClasses[position]
-      )}
-    >
-      <div className="space-y-3 pointer-events-auto">
-        <AnimatePresence mode="popLayout">
-          {visibleToasts.map((toast) => (
-            <Toast
-              key={toast.id}
-              {...toast}
-              onClose={onClose}
-              position={position}
-            />
-          ))}
-        </AnimatePresence>
-      </div>
+    <div className={cn('fixed z-50', positionClasses[position])}>
+      <AnimatePresence mode="popLayout">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            {...toast}
+            position={position}
+            onClose={useToast().removeToast}
+          />
+        ))}
+      </AnimatePresence>
     </div>
   );
 }
 
-// Hook for managing toasts
+// Toast Hook
 export function useToast() {
   const [toasts, setToasts] = useState<ToastData[]>([]);
 
   const addToast = (toast: Omit<ToastData, 'id'>) => {
     const id = Math.random().toString(36).substr(2, 9);
     const newToast: ToastData = { ...toast, id };
-    
+
     setToasts(prev => [...prev, newToast]);
     return id;
   };
@@ -266,7 +213,7 @@ export function useToast() {
   };
 
   const updateToast = (id: string, updates: Partial<ToastData>) => {
-    setToasts(prev => prev.map(toast => 
+    setToasts(prev => prev.map(toast =>
       toast.id === id ? { ...toast, ...updates } : toast
     ));
   };
@@ -276,20 +223,20 @@ export function useToast() {
   };
 
   // Convenience methods
-  const success = (title: string, message?: string, options?: Partial<ToastData>) => 
+  const success = (title: string, message?: string, options?: Partial<ToastData>) =>
     addToast({ type: 'success', title, message, ...options });
 
-  const error = (title: string, message?: string, options?: Partial<ToastData>) => 
+  const error = (title: string, message?: string, options?: Partial<ToastData>) =>
     addToast({ type: 'error', title, message, ...options });
 
-  const warning = (title: string, message?: string, options?: Partial<ToastData>) => 
+  const warning = (title: string, message?: string, options?: Partial<ToastData>) =>
     addToast({ type: 'warning', title, message, ...options });
 
   const info = (title: string, message?: string, options?: Partial<ToastData>) => 
     addToast({ type: 'info', title, message, ...options });
 
-  const loading = (title: string, message?: string, options?: Partial<ToastData>) => 
-    addToast({ type: 'loading', title, message, persistent: true, ...options });
+  const loading = (title: string, message?: string, options?: Partial<ToastData>) =>
+    addToast({ type: 'loading', title, message, persistent: true, ...options });  
 
   const networkStatus = (isOnline: boolean) => {
     const existingNetworkToast = toasts.find(t => t.type === 'network');
@@ -301,7 +248,7 @@ export function useToast() {
       addToast({
         type: 'network',
         title: 'Connection Lost',
-        message: 'You are currently offline. Some features may not work.',
+        message: 'You are currently offline. Some features may not work.',        
         persistent: true
       });
     }

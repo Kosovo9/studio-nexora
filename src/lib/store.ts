@@ -1543,3 +1543,6 @@ useStore.subscribe(
     }
   }
 );
+
+// Main store hook export for compatibility
+export const useStudioStore = useStore;
